@@ -5,9 +5,18 @@
     <title>Login</title>
 </head>
 <body>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     <h1>Login</h1>
     <form method="POST" action="/">
-        <input type="hidden" name="csrf-token" value="{{csrf_token}}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username"><br>
         <label for="password">Password:</label>

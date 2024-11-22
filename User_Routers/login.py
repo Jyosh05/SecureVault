@@ -10,14 +10,17 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         # need to query the sql db for credentials
-
+        print(token)
         if not token or token != form_token:
             flash("CSRF token invalid", 'error')
+            return redirect(url_for("login.login"))
         return  redirect(url_for("login.home"))
     session['csrf_token'] = secrets.token_hex(16)
+    print(session['csrf_token'])
     return render_template("Login/login.html", csrf_token=session['csrf_token'])
 
 
 @login_bp.route("/home",)
 def home():
+
     return render_template("Login/home.html")
