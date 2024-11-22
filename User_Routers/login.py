@@ -7,6 +7,9 @@ def login():
     if request.method == "POST":
         token = session.get('csrf_token',None)
         form_token = request.form.get('csrf_token',None)
+        username = request.form.get('username')
+        password = request.form.get('password')
+        # need to query the sql db for credentials
 
         if not token or token != form_token:
             flash("CSRF token invalid", 'error')
