@@ -1,7 +1,7 @@
 from flask import Flask
 from config import secret_key
-from User.login import login_bp
-from User.register import register_bp
+from User_Routers.login import login_bp
+from User_Routers.register import register_bp
 
 app = Flask(__name__)
 app.secret_key = secret_key

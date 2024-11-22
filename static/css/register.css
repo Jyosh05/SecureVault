@@ -1,0 +1,119 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #FFFFFF;
+    color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+/* Title */
+h1 {
+    font-size: 2rem;
+    color: #8E44AD; /* Purple */
+    margin-bottom: 20px;
+    text-align: center; /* Ensure the title is centered */
+}
+
+/* Form Container */
+form {
+    background-color: #FFE7FF; /* Soft background for the form */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+}
+
+/* Label Styling */
+label {
+    font-size: 1rem;
+    font-weight:bold;
+    color: #000000;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Input Fields */
+input[type="text"], input[type="password"], input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #C678E5; /* Light purple border */
+    border-radius: 5px;
+    font-size: 1rem;
+    color: black; /* Text color of the input fields */
+    text-align: right; /* Align text to the right of the input box */
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+    border-color: #FFAEFF; /* Change border color when focused */
+    outline: none;
+}
+
+/* Submit Button */
+button[type="submit"], a.button-link {
+    background-color: #8E44AD; /* Purple */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    display: block;
+    width: 100%; /* Make the button occupy the same width as the input fields */
+    text-align: center;
+    text-decoration: none; /* Remove underline for <a> */
+}
+
+/* Hover Effects */
+button[type="submit"]:hover, a.button-link:hover {
+    background-color: #C678E5; /* Hover with a light purple */
+}
+
+/* Back Link as Button */
+a.button-link {
+    background-color: #8E44AD; /* Same purple background as the submit button */
+    color: white; /* Text color white */
+    font-size: 1rem;
+    text-decoration: none; /* Remove underline */
+    padding: 12px 20px;
+    border-radius: 5px;
+    text-align: center;
+    display: block;
+    width: 100%; /* Make the back link occupy the same width as the input fields */
+}
+
+a.button-link:hover {
+    background-color: #C678E5; /* Hover effect for the back button */
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+    form {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    button[type="submit"], a.button-link {
+        font-size: 0.9rem;
+        padding: 10px 15px;
+    }
+}
