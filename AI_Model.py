@@ -20,11 +20,10 @@ df = pd.DataFrame(data)
 print(df.head())
 print(df.isnull().sum())
 
-# Extract features (text) and labels (PII types)
 X = df['text']  # Text data
-y = df['pii_types']  # Labels (list of PII types)
+y = df['pii_types']  #PII label
 
-# Convert multi-labels into a binary matrix using MultiLabelBinarizer
+#convert PII labels into binary matrix
 mlb = MultiLabelBinarizer()
 y_bin = mlb.fit_transform(y)
 
