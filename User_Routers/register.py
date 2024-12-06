@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template,request, jsonify
-from general_utils import mydb
+from Utils.general_utils import mydb
 
 register_bp = Blueprint("register", __name__, template_folder="templates")
 

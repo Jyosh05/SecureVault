@@ -1,10 +1,9 @@
 from flask import Flask
-from config import secret_key, DB_Config
+from config import secret_key
 from User_Routers.login import login_bp
 from User_Routers.register import register_bp
 from User_Routers.User_Functions import User_Features
-import mysql.connector
-from general_utils import mydb, check_table
+from Utils.general_utils import check_table
 
 
 app = Flask(__name__)
