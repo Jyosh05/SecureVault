@@ -1,5 +1,6 @@
 import mysql.connector
 from config import DB_Config
+import os
 
 mydb = mysql.connector.connect(
     host=DB_Config['host'],
@@ -23,7 +24,7 @@ def check_table():
                     Username VARCHAR(255) NOT NULL UNIQUE,
                     Password VARCHAR(255) NOT NULL,
                     Email VARCHAR(255) NOT NULL,
-                    Role ENUM('so', 'user')
+                    Role ENUM('so', 'user') DEFAULT 'user'
                 )
             """)
 
