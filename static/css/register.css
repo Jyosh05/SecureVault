@@ -21,14 +21,14 @@ body {
 /* Title */
 h1 {
     font-size: 2rem;
-    color: #8E44AD; /* Purple */
+    color: #000000;
     margin-bottom: 20px;
-    text-align: center; /* Ensure the title is centered */
+    text-align: center;
 }
 
 /* Form Container */
 form {
-    background-color: #FFE7FF; /* Soft background for the form */
+    background-color: #96CFF1; /* Soft background for the form */
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -42,7 +42,6 @@ label {
     font-size: 1rem;
     font-weight:bold;
     color: #000000;
-    margin-bottom: 5px;
     display: block;
 }
 
@@ -51,11 +50,12 @@ input[type="text"], input[type="password"], input[type="email"] {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border: 2px solid #C678E5; /* Light purple border */
-    border-radius: 5px;
     font-size: 1rem;
-    color: black; /* Text color of the input fields */
-    text-align: right; /* Align text to the right of the input box */
+    border: none;
+    border-radius:10px;
+    color: black;
+    text-align: left;
+    background-color:#CAE9FE;
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
@@ -65,7 +65,7 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
 /* Submit Button */
 button[type="submit"], a.button-link {
-    background-color: #8E44AD; /* Purple */
+    background-color: #057DCD;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -82,12 +82,12 @@ button[type="submit"], a.button-link {
 
 /* Hover Effects */
 button[type="submit"]:hover, a.button-link:hover {
-    background-color: #C678E5; /* Hover with a light purple */
+    background-color: #2B74A5; /* Hover with a light purple */
 }
 
 /* Back Link as Button */
 a.button-link {
-    background-color: #8E44AD; /* Same purple background as the submit button */
+    background-color: #057DCD; /* Same purple background as the submit button */
     color: white; /* Text color white */
     font-size: 1rem;
     text-decoration: none; /* Remove underline */
@@ -99,7 +99,7 @@ a.button-link {
 }
 
 a.button-link:hover {
-    background-color: #C678E5; /* Hover effect for the back button */
+    background-color: #2B74A5; /* Hover effect for the back button */
 }
 
 /* Responsive Design */

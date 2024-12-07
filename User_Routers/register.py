@@ -25,7 +25,7 @@ def register():
                 cursor.execute(query,(username,password,email))
                 mydb.commit()
                 cursor.close()
-                return render_template('Login/home.html', username=username)
+                return render_template('User_auth+creation/home.html', username=username)
 
             except Exception as e:
                 print(e)
@@ -33,4 +33,4 @@ def register():
         else:
             return jsonify({'error':'An Unexpected Error Has Occured'})
 
-    return render_template('Login/register.html')
+    return render_template('User_auth+creation/register.html')

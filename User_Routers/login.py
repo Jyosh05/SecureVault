@@ -1,10 +1,9 @@
 from flask import Blueprint
 from Utils.general_utils import mydb
-
-login_bp = Blueprint('login', __name__, template_folder='templates')
 from flask import render_template, request, redirect, url_for, session, jsonify, flash
 from Utils.CSRF_util import generate_csrf_token
 
+login_bp = Blueprint('login', __name__, template_folder='templates')
 @login_bp.route('/', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -18,7 +17,7 @@ def login():
 
         # Validate input
         if not username or not password:
-            return render_template("Login/login.html", error="Username and Password Required",
+            return render_template("User_auth+creation/login.html", error="Username and Password Required",
                                    csrf_token=session.get('csrf_token'))
 
         # CSRF token validation
@@ -33,7 +32,7 @@ def login():
             user = cursor.fetchone()
 
             if not user:
-                return render_template("Login/login.html", error="Invalid username or password",
+                return render_template("User_auth+creation/login.html", error="Invalid username or password",
                                        csrf_token=session.get('csrf_token'))
 
             # Check if password matches
@@ -43,7 +42,7 @@ def login():
                 session['username'] = user['Username']
                 return redirect(url_for('login.home'))
             else:
-                return render_template("Login/login.html", error="Invalid username or password",
+                return render_template("User_auth+creation/login.html", error="Invalid username or password",
                                        csrf_token=session.get('csrf_token'))
 
         except Exception as e:
@@ -51,11 +50,11 @@ def login():
             return jsonify({'error': 'An error occurred'}), 500
     #generates CSRF token
     session['csrf_token'] = generate_csrf_token()
-    return render_template("Login/login.html", csrf_token=session.get('csrf_token'))
+    return render_template("User_auth+creation/login.html", csrf_token=session.get('csrf_token'))
 
 
 @login_bp.route("/home",)
 def home():
     session.pop('csrf_token',None)
     print(session)
-    return render_template("Login/home.html")
+    return render_template("home.html")
