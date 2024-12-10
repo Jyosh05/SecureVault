@@ -1,6 +1,7 @@
 import mysql.connector
 from config import DB_Config
 import os
+from config import ALLOWED_EXTENSIONS
 
 
 mydb = mysql.connector.connect(
@@ -146,6 +147,8 @@ def make_dir_for_temp_upload():
     if not os.path.exists(upload_folder):
         os.makedirs(upload_folder)
 
+    return upload_folder
+
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.',1)[1].lower() in app.config['ALLOWED_EXTENTIONS']
+    return '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS

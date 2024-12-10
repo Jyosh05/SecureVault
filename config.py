@@ -8,3 +8,5 @@ DB_Config = {
     'database': 'securevault',
     'port': 3306
 }
+
+ALLOWED_EXTENSIONS = {'pdf','txt','docx','xlsx','pptx'}
