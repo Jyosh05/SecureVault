@@ -48,11 +48,6 @@ def login():
                 session['username'] = user['Username']
                 session['role'] = user['Role']
 
-                session['user'] = {
-                    'id': user['ID'],
-                    'username': user['Username'],
-                    'role': user['Role']
-                }
 
                 # Redirect the user based on their role
                 role = user['Role'].lower()  # Normalize the role to lowercase
