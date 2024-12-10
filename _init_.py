@@ -1,9 +1,10 @@
 from flask import Flask
 from config import secret_key
-from User_Routers.login import login_bp
-from User_Routers.register import register_bp
-from User_Routers.view_files import view_files_bp
-from User_Routers.User_Functions import User_Features_bp
+from User_Routes.login import login_bp
+from User_Routes.register import register_bp
+from User_Routes.view_files import view_files_bp
+from User_Routes.User_Functions import User_Features_bp
+from User_Routes.upload import upload_bp
 from Utils.general_utils import check_table
 
 #PLEASE REGISTER THE BLUEPRINT
@@ -20,6 +21,7 @@ app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
 app.register_blueprint(User_Features_bp)
 app.register_blueprint(view_files_bp)
+app.register_blueprint(upload_bp)
 
 if __name__ == "__main__":
     check_table()
