@@ -5,6 +5,7 @@ from User_Routes.register import register_bp
 from User_Routes.view_files import view_files_bp
 from User_Routes.User_Functions import User_Features_bp
 from User_Routes.upload import upload_bp
+from Admin.home import admin_bp
 from Utils.general_utils import check_table
 
 #PLEASE REGISTER THE BLUEPRINT
@@ -22,6 +23,7 @@ app.register_blueprint(register_bp)
 app.register_blueprint(User_Features_bp)
 app.register_blueprint(view_files_bp)
 app.register_blueprint(upload_bp)
+app.register_blueprint(admin_bp)
 
 if __name__ == "__main__":
     check_table()
