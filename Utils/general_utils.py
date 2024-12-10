@@ -2,6 +2,7 @@ import mysql.connector
 from config import DB_Config
 import os
 
+
 mydb = mysql.connector.connect(
     host=DB_Config['host'],
     user=DB_Config['user'],
@@ -137,5 +138,14 @@ def check_table():
     finally:
         mycursor.close()
 
-check_table()
 
+
+#upload route checker
+def make_dir_for_temp_upload():
+    upload_folder = '../Files/Redact_&_Watermark'
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.',1)[1].lower() in app.config['ALLOWED_EXTENTIONS']

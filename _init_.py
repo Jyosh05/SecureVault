@@ -11,6 +11,8 @@ app = Flask(__name__)
 app.secret_key = secret_key
 
 
+app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
+
 #app routes
 app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
@@ -18,4 +20,5 @@ app.register_blueprint(User_Features)
 
 if __name__ == "__main__":
     check_table()
+    print(app.config)
     app.run(debug=True)
