@@ -5,14 +5,17 @@ from werkzeug.utils import secure_filename
 from Utils.general_utils import make_dir_for_temp_upload
 from Utils.file_converter import *
 from Utils.PDF_Redaction import redact_pdf
+from Utils.rbac_utils import roles_required
 
 redact_bp = Blueprint('redact',__name__, template_folder='templates')
 
 @redact_bp.route('/redact')
+@roles_required('user')
 def redact():
     return render_template('Features/PDF_Redactor.html')
 
 @redact_bp.route('/redact_upload', methods=['POST'])
+@roles_required('user')
 def redact_upload():
     """Handle file upload, convert to PDF if needed, redact the content, and allow download."""
     if 'file' not in request.files:

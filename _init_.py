@@ -8,6 +8,7 @@ from User_Routes.upload import upload_bp
 from User_Routes.redact import redact_bp
 from Admin.home import admin_bp
 from Utils.general_utils import *
+from Utils.rbac_utils import create_so_user
 
 #PLEASE REGISTER THE BLUEPRINT
 
@@ -30,4 +31,5 @@ app.register_blueprint(redact_bp)
 if __name__ == "__main__":
     check_table()
     print(app.config)
+    create_so_user()
     app.run(debug=True)
