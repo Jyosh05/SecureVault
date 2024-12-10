@@ -2,6 +2,7 @@ from flask import Blueprint
 from Utils.general_utils import mydb
 from flask import render_template, request, redirect, url_for, session, jsonify, flash
 from Utils.CSRF_util import generate_csrf_token
+from Utils.rbac_utils import role_redirects, roles_required
 
 login_bp = Blueprint('login', __name__, template_folder='templates')
 @login_bp.route('/', methods=["GET", "POST"])
@@ -14,6 +15,8 @@ def login():
 
         username = request.form.get('username')
         password = request.form.get('password')
+        print(f"Token: {token}, Form Token: {form_token}")
+        print(f"Username: {username}, Password: {password}")
 
         # Validate input
         if not username or not password:
@@ -30,17 +33,33 @@ def login():
             query = "SELECT * FROM user WHERE username = %s"
             cursor.execute(query, (username,))
             user = cursor.fetchone()
+            print(f"User fetched from DB: {user}")
 
             if not user:
+                print("No user found with given username")
                 return render_template("User_auth+creation/login.html", error="Invalid username or password",
                                        csrf_token=session.get('csrf_token'))
 
             # Check if password matches
             if password == user['Password']:
+                print("Password match successful")
                 #Adds in UserID and Username into the session
                 session['user_id'] = user['ID']
                 session['username'] = user['Username']
-                return redirect(url_for('login.home'))
+                session['role'] = user['Role']
+
+                session['user'] = {
+                    'id': user['ID'],
+                    'username': user['Username'],
+                    'role': user['Role']
+                }
+
+                # Redirect the user based on their role
+                role = user['Role'].lower()  # Normalize the role to lowercase
+                redirect_url = role_redirects.get(role, 'home')
+                print(f"Redirecting to: {redirect_url}")
+                return redirect(url_for(redirect_url))
+
             else:
                 return render_template("User_auth+creation/login.html", error="Invalid username or password",
                                        csrf_token=session.get('csrf_token'))
@@ -54,6 +73,7 @@ def login():
 
 
 @login_bp.route("/home",)
+@roles_required('user')
 def home():
     session.pop('csrf_token',None)
     print(session)

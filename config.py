@@ -8,3 +8,10 @@ DB_Config = {
     'database': 'securevault',
     'port': 3306
 }
+
+so_config = {
+    'username': 'John_Admin',
+    'password': 'security_officer1234',
+    'email': 'jyoshwlitha@gmail.com',
+    'role': 'so'
+}
