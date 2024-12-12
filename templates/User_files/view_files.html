@@ -23,6 +23,9 @@
                     <img src="{{ url_for('static', filename='previews/' + file.File_Type + '.png') }}" alt="File Icon">
                 </div>
                 <div class="file-uploaded-at">{{ file.Uploaded_At.strftime('%Y-%m-%d') }}</div>
+                <div class="options">
+                    <div class="dots">⋮</div>  <!-- Three horizontal dots icon -->
+                </div>
             </div>
             {% endfor %}
             {% if not files %}
@@ -30,13 +33,6 @@
             {% endif %}
         </div>
     </div>
-
-    <script>
-    function viewPDF(filePath) {
-        window.open(filePath, '_blank');  // Opens the file in a new tab
-    }
-    </script>
 </body>
 </html>
-
 
