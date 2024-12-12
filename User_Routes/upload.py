@@ -10,7 +10,7 @@ import datetime
 # File Upload Blueprint
 upload_bp = Blueprint('file', __name__, template_folder='templates')
 
-UPLOAD_FOLDER = 'uploads/'  # Adjust this to your upload directory
+UPLOAD_FOLDER = 'Files/Perma'  # Adjust this to your upload directory
 
 # Ensure the upload folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)

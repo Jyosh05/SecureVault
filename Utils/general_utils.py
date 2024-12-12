@@ -155,7 +155,7 @@ def make_dir_for_temp_upload():
 
     return upload_folder
 
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'pdf'}
 
 # Maximum file size in bytes (5 MB)
 MAX_FILE_SIZE = 5 * 1024 * 1024
