@@ -9,20 +9,18 @@
 <body>
 {% include 'navbar.html' %}
     <div class="container">
-        <h1>Your Uploaded Files</h1>
+        <h1>Welcome to {{ username }}'s Vault</h1>
 
-        <!-- Upload Button -->
         <div class="upload-section">
-            <button a href="{{ url_for('file.upload_file') }}" class="upload-button">Upload File</button>
+            <a href="{{ url_for('file.upload_file') }}" class="upload-button">Upload</a>
         </div>
 
         <div class="file-grid">
             {% for file in files %}
-            <div class="file-card">
+            <div class="file-card" onclick="viewPDF('{{ url_for('static', filename='Files/' + file.File_Path) }}')">
                 <div class="file-title">{{ file.Title }}</div>
                 <div class="file-icon">
-                    <img src="{{ url_for('static', filename='previews/' + file.File_Type + '.png') }}"
-                        alt="File Icon">
+                    <img src="{{ url_for('static', filename='previews/' + file.File_Type + '.png') }}" alt="File Icon">
                 </div>
                 <div class="file-uploaded-at">{{ file.Uploaded_At.strftime('%Y-%m-%d') }}</div>
             </div>
@@ -32,5 +30,13 @@
             {% endif %}
         </div>
     </div>
+
+    <script>
+    function viewPDF(filePath) {
+        window.open(filePath, '_blank');  // Opens the file in a new tab
+    }
+    </script>
 </body>
 </html>
+
+

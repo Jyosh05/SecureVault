@@ -18,6 +18,11 @@ def view_files():
 
     try:
         mycursor = mydb.cursor(dictionary=True)
+
+        mycursor.execute("SELECT Username FROM user WHERE ID = %s", (user_id,))
+        user = mycursor.fetchone()
+        username = user['Username'] if user else "Unknown User"
+
         query = """
             SELECT ID, Title, File_Type, File_Path, Uploaded_At 
             FROM file
@@ -26,7 +31,7 @@ def view_files():
         """
         mycursor.execute(query, (user_id,))
         files = mycursor.fetchall()
-        return render_template('User_files/view_files.html', files=files)
+        return render_template('User_files/view_files.html', username=username, files=files)
     except Exception as e:
         flash(f"Error retrieving files: {e}", 'error')
         return render_template('User_files/view_files.html', files=[])
