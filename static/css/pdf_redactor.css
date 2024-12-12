@@ -1,0 +1,77 @@
+/* pdf_redactor.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333;
+    display: flex;
+    justify-content: center;   /* Centers content horizontally */
+    align-items: center;       /* Centers content vertically */
+    height: 100vh;             /* Makes the body take up the full viewport height */
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    padding: 20px;
+    background-color: transparent; /* White background */
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+p {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Blue button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #0062cc;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.success-message {
+    color: green;
+    text-align: center;
+    margin-top: 15px;
+}

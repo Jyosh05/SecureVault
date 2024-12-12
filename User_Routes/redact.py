@@ -59,9 +59,7 @@ def redact_upload():
         file.save(temp_file_path)
         output_pdf_path = temp_file_path
 
-    # Now that we have the PDF, redact sensitive information
     redacted_pdf_path = os.path.join(temp_upload_folder, f'redacted_{filename}')
     redact_pdf(temp_file_path, redacted_pdf_path)
 
-    # Return the redacted file for download
     return send_file(redacted_pdf_path, as_attachment=True, download_name=f"redacted_{filename}")
