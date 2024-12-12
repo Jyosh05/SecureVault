@@ -38,9 +38,15 @@ def check_table():
                 CREATE TABLE IF NOT EXISTS file(
                     ID INT AUTO_INCREMENT PRIMARY KEY,
                     User_ID INT,
-                    File_Meta_Data VARCHAR(255),
+                    Title VARCHAR(255),
+                    Description TEXT,
+                    File_Name VARCHAR(255),
+                    File_Type VARCHAR(50),
                     File_Path VARCHAR(600),
+                    File_Size INT,
+                    File_Hash VARCHAR(128),
                     Co_Authors INT,
+                    Uploaded_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     File_Classification ENUM('non-sensitive', 'sensitive', 'confidential'),
                     FOREIGN KEY (User_ID) REFERENCES user(ID) ON DELETE CASCADE
                 )
@@ -149,6 +155,16 @@ def make_dir_for_temp_upload():
 
     return upload_folder
 
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+# Maximum file size in bytes (5 MB)
+MAX_FILE_SIZE = 5 * 1024 * 1024
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.',1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def is_file_size_valid(file):
+    file.seek(0, 2)  # Move pointer to end of the file to get the size
+    size = file.tell()
+    file.seek(0)  # Reset pointer to the start of the file
+    return size <= MAX_FILE_SIZE
