@@ -2,9 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>View File</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Files</title>
+    <link rel="stylesheet" href="/static/css/view_files.css">
 </head>
 <body>
-    <h1>View File</h1>
+{% include 'navbar.html' %}
+    <div class="container">
+        <h1>Welcome to {{ username }}'s Vault</h1>
+
+        <div class="upload-section">
+            <a href="{{ url_for('file.upload_file') }}" class="upload-button">Upload</a>
+        </div>
+
+        <div class="file-grid">
+            {% for file in files %}
+            <div class="file-card" onclick="viewPDF('{{ url_for('static', filename='Files/' + file.File_Path) }}')">
+                <div class="file-title">{{ file.Title }}</div>
+                <div class="file-icon">
+                    <img src="{{ url_for('static', filename='previews/' + file.File_Type + '.png') }}" alt="File Icon">
+                </div>
+                <div class="file-uploaded-at">{{ file.Uploaded_At.strftime('%Y-%m-%d') }}</div>
+                <div class="options">
+                    <div class="dots">⋮</div>  <!-- Three horizontal dots icon -->
+                </div>
+            </div>
+            {% endfor %}
+            {% if not files %}
+            <p>You have not uploaded any files yet.</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>
+

@@ -1,0 +1,121 @@
+/* Container for the entire page */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f8ff; /* Light blue background */
+}
+
+/* Main container for the content */
+.main-container {
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  width: 90%;
+}
+
+/* Header text */
+.header {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Upload button and search bar */
+.upload-and-search {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.upload-button {
+  padding: 0.5rem 1.5rem;
+  background-color: #44B3FF;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.upload-button:hover {
+  background-color: #54BAFF;
+}
+
+.search-bar {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-bar input {
+  padding: 0.5rem;
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+/* Grid container for file cards */
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Individual file card */
+.file-card {
+  background-color: #e6f7ff;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem 0.5rem 0.9rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative; /* Added for absolute positioning */
+}
+
+.file-card img {
+  max-width: 100%;
+  padding-top: 0.5rem;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.file-card .title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.file-card .upload-date {
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.file-card .options {
+  font-size: 1.5rem;
+  color: #777;
+  cursor: pointer;
+  position: absolute; /* Absolute positioning */
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2rem;
+  padding-right: 0.7rem;
+}

@@ -1,1 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #EBF7FF;
+    text-align: center; /* Center all content */
+}
 
+.title {
+    align-items: center;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Ensure text inside container is left-aligned */
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center; /* Center the form group */
+    align-items: center; /* Center items vertically */
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-right: 10px; /* Space between label and input */
+    width: 150px; /* Fixed width for labels */
+    text-align: right; /* Align text to the right */
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 70%; /* Adjusted to span full width within the container */
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-group input[type="file"] {
+    padding: 3px;
+}
+
+.form-group button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #60BFFF;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #0095FB;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}
