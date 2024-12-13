@@ -10,6 +10,7 @@ def redact_pdf(input_pdf_path, output_pdf_path):
         "nric": r"\b[A-Z]\d{7}[A-Z]\b",
         "name": r"\b[A-Z][a-z]* [A-Z][a-z]*\b",
         "location": r"\b[A-Z][a-z]*, [A-Z][a-z]*\b",
+        "gmail": r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
     }
 
     # Open the input PDF
