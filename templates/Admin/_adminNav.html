@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #CAE9FE;
+  overflow: hidden; /* Hide the scrollbar and disable scrolling */
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
+  padding-top: 60px; /* Space for the logo */
+  /* Optionally, add the following properties to ensure no overflow: */
+  box-sizing: border-box;
+}
+
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #000;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  background-color: #057CDC;
+}
+
+#main {
+  transition: margin-left 0.5s;
+  padding: 16px;
+  color: #1F2E25;
+
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+#logo {
+  display: flex;
+  align-items: center;
+  background-color: #9FD8FF
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: -50px;
+  border-bottom: 1px solid black;
+}
+
+#logo img {
+  width: 90px;
+  height: 76px;
+}
+
+#logo p {
+  margin: 0;
+  padding-left: 10px;
+  color: black;
+  font-weight: bolder;
+
+}
+
+.sidenav-content {
+  flex-grow: 1;
+  padding-top: 20px; /* Space between logo and links */
+}
+
+#logout {
+  background-color: #FF5858;
+  padding: 10px 0;
+  height: 45px;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+}
+
+#logout a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  text-align: center;
+  margin-left: -30px;
+  font-weight: bold; /* Make the text bold */
+
+}
+
+.user-details {
+  display: flex;
+  align-items: center; /* Align items vertically center */
+  margin-left: 20px;
+}
+
+.user-details img {
+  border-radius: 50%; /* Optional: makes the profile picture round */
+  margin-right: 10px; /* Space between the image and the text */
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column; /* Stack username above role */
+}
+
+.username {
+  font-weight: bold; /* Optional: make username bold */
+  margin: 0; /* Remove default margin */
+}
+
+.role {
+  margin: 0; /* Remove default margin */
+}
+
+.my-line{
+  width: 230px;
+  background-color: #1F2E25;
+  border: none; /* Remove the default border */
+  margin: 20px auto; /* Center the line and add vertical spacing */
+
+}
+
+
+
+</style>
+</head>
+<body>
+
+<div id="mySidenav" class="sidenav">
+  <div id="logo">
+    <img src="/static/previews/logo.png" alt="Logo">
+    <p>SecureVault</p>
+  </div>
+  <div class="sidenav-content">
+    {% if 'user' in session %}
+      <div class="user-details">
+        <div class="user-info">
+          <p class="username">{{ session['user']['username'] }}</p>
+          <p class="role">{{ session['user']['role'] }}</p>
+        </div>
+      </div>
+    {% endif %}
+
+    <hr class="my-line">
+    <a href="/admin_home">Logs</a>
+    <a href="#">Users</a>
+    <a href="#">Security Officers</a>
+    <a href="#">Locked Accounts</a>
+    <a href="#">My Account</a>
+  </div>
+  <div id="logout">
+    <a href="/logout">Logout</a>
+  </div>
+</div>
+
+<div id="main">
+  <span style="font-size:30px;cursor:pointer" onclick="toggleNav()">&#9776;</span>
+</div>
+
+<script>
+function toggleNav() {
+  var sidenav = document.getElementById("mySidenav");
+  var main = document.getElementById("main");
+
+  if (sidenav.style.width === "250px") {
+    sidenav.style.width = "0";
+    main.style.marginLeft = "0";
+  } else {
+    sidenav.style.width = "250px";
+    main.style.marginLeft = "250px";
+  }
+}
+</script>
+
+</body>
+</html>
