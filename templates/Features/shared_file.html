@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/shared_file.css">
+    <title>{{ file.File_Name }} - Shared File</title>
+</head>
+<body>
+
+    <h1>Shared File: {{ file.File_Name }}</h1>
+
+    {% if privilege == 'r' %}
+        <p>You have read-only access. You can view the file content below.</p>
+        <!-- You can embed a PDF or show an image here, depending on the file type -->
+        <embed src="{{ url_for('access_sharing_view.serve_file', file_id=file['ID']) }}" type="application/pdf" width="100%" height="500px" />
+
+    {% elif privilege == 'd' %}
+        <p>You have download access. Click the button below to download the file.</p>
+        <a href="{{ url_for('access_shared_file', token=token) }}" download>
+            <button>Download File</button>
+        </a>
+    {% else %}
+        <p>You do not have permission to access this file.</p>
+    {% endif %}
+</body>
+</html>

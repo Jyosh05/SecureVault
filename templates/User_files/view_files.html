@@ -26,6 +26,7 @@
                 <div class="options">
                     <div class="dots">⋮</div>  <!-- Three horizontal dots icon -->
                 </div>
+                <a href="{{ url_for('generate_link.generate_link', file_id=file.ID) }}">Generate Sharing Link</a>
             </div>
             {% endfor %}
             {% if not files %}

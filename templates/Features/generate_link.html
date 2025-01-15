@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Temporary Link</title>
+</head>
+<body>
+{% include 'navbar.html' %}
+
+    <h1>Generate Temporary Sharing Link</h1>
+
+    <form method="POST" action="{{ url_for('generate_link.generate_link', file_id=file_id) }}">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+
+        <label for="duration">Duration:</label>
+        <select name="duration_unit" id="duration_unit" required>
+            <option value="minutes">Minutes</option>
+            <option value="hours">Hours</option>
+        </select>
+        <input type="number" name="duration" id="duration" min="1" required>
+
+        <label for="privilege">Privilege:</label>
+        <select name="privilege" id="privilege" required>
+            <option value="r">Read</option>
+            <option value="d">Download</option>
+        </select>
+
+        <button type="submit">Generate Link</button>
+    </form>
+</body>
+</html>
