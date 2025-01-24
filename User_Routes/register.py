@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,request, jsonify
+from flask import Blueprint,render_template,request, jsonify, redirect, url_for
 from Utils.general_utils import mydb
 
 register_bp = Blueprint("register", __name__, template_folder="templates")
@@ -25,7 +25,7 @@ def register():
                 cursor.execute(query,(username,password,email))
                 mydb.commit()
                 cursor.close()
-                return render_template('User_auth+creation/home.html', username=username)
+                return redirect(url_for("login.login"))
 
             except Exception as e:
                 print(e)

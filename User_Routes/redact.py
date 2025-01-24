@@ -2,8 +2,7 @@ import os.path
 
 from flask import Blueprint, render_template,request,send_file,url_for,flash,redirect
 from werkzeug.utils import secure_filename
-from Utils.general_utils import make_dir_for_temp_upload
-from Utils.file_converter import *
+from Utils.general_utils import make_dir_for_temp_upload, allowed_file
 from Utils.PDF_Redaction import redact_pdf
 from Utils.rbac_utils import roles_required
 
@@ -17,7 +16,6 @@ def redact():
 @redact_bp.route('/redact_upload', methods=['POST'])
 @roles_required('user')
 def redact_upload():
-    """Handle file upload, convert to PDF if needed, redact the content, and allow download."""
     if 'file' not in request.files:
         flash('No file part', 'error')
         return redirect(url_for('redact.redact'))
@@ -32,32 +30,13 @@ def redact_upload():
         flash('Unsupported file type. Please upload a valid file.', 'error')
         return redirect(url_for('redact.redact'))
 
-    # Secure the file name and save it to the temporary upload folder
     filename = secure_filename(file.filename)
     file_extension = filename.rsplit('.', 1)[1].lower()
     temp_upload_folder = make_dir_for_temp_upload()
 
-    # If the file is not a PDF, convert it to a PDF first
-    if file_extension != 'pdf':
-        temp_file_path = os.path.join(temp_upload_folder, filename)
-        file.save(temp_file_path)
-        output_pdf_path = os.path.join(temp_upload_folder, f"{filename.rsplit('.', 1)[0]}.pdf")
-
-        if file_extension == 'docx':
-            # Convert DOCX to PDF using LibreOffice (you need LibreOffice installed)
-            subprocess.run(['libreoffice', '--headless', '--convert-to', 'pdf', temp_file_path])
-            output_pdf_path = temp_file_path.rsplit('.', 1)[0] + '.pdf'
-        elif file_extension == 'txt':
-            # Convert text file to PDF (basic approach)
-            convert_text_to_pdf(temp_file_path, output_pdf_path)
-        else:
-            flash('Unsupported file type for conversion.', 'error')
-            return redirect(url_for('redact.redact'))
-    else:
-        # If the file is already a PDF
-        temp_file_path = os.path.join(temp_upload_folder, filename)
-        file.save(temp_file_path)
-        output_pdf_path = temp_file_path
+    temp_file_path = os.path.join(temp_upload_folder, filename)
+    file.save(temp_file_path)
+    output_pdf_path = temp_file_path
 
     redacted_pdf_path = os.path.join(temp_upload_folder, f'redacted_{filename}')
     redact_pdf(temp_file_path, redacted_pdf_path)
