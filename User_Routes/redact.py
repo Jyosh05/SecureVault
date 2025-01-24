@@ -31,12 +31,10 @@ def redact_upload():
         return redirect(url_for('redact.redact'))
 
     filename = secure_filename(file.filename)
-    file_extension = filename.rsplit('.', 1)[1].lower()
     temp_upload_folder = make_dir_for_temp_upload()
 
     temp_file_path = os.path.join(temp_upload_folder, filename)
     file.save(temp_file_path)
-    output_pdf_path = temp_file_path
 
     redacted_pdf_path = os.path.join(temp_upload_folder, f'redacted_{filename}')
     redact_pdf(temp_file_path, redacted_pdf_path)

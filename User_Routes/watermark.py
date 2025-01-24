@@ -31,21 +31,20 @@ def watermark_upload():
         return redirect(url_for('watermark.watermark'))
 
     filename = secure_filename(file.filename)
-    file_extension = filename.rsplit('.', 1)[1].lower()
     temp_upload_folder = make_dir_for_temp_upload()
 
     temp_file_path = os.path.join(temp_upload_folder, filename)
     file.save(temp_file_path)
 
-    watermark_text = f"Watermarked by {session.get('username', 'Unknown User')}"  # Dynamic watermark
+    watermark_text = session.get('username')  # Dynamic watermark
     watermarked_pdf_path = os.path.join(temp_upload_folder, f"watermarked_{filename}")
 
     # Apply watermark
-    watermarked_pdf_stream = watermark_pdf(temp_file_path, watermark_text)
+    result_pdf_path = watermark_pdf(temp_file_path, watermark_text, watermarked_pdf_path)
 
-    # Save the watermarked PDF to a temporary path
-    with open(watermarked_pdf_path, 'wb') as output_file:
-        output_file.write(watermarked_pdf_stream.read())
-
-    # Return the watermarked PDF as a download
-    return send_file(watermarked_pdf_path, as_attachment=True, download_name=f"watermarked_{filename}")
+    if result_pdf_path:
+        # Return the watermarked PDF as a download
+        return send_file(result_pdf_path, as_attachment=True, download_name=f"watermarked_{filename}")
+    else:
+        flash('Error applying watermark.', 'error')
+        return redirect(url_for('watermark.watermark'))
