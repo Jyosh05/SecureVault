@@ -10,6 +10,8 @@ from User_Routes.generate_link import temporary_sharing_downloads_bp, access_tem
 from Admin.home import admin_bp
 from Utils.general_utils import *
 from Utils.rbac_utils import create_so_user
+from Admin.Dashboard import dashboard_bp
+
 
 
 #PLEASE REGISTER THE BLUEPRINT
@@ -32,6 +34,9 @@ app.register_blueprint(temporary_sharing_downloads_bp)
 app.register_blueprint(access_temporary_file_bp)
 app.register_blueprint(access_temporary_file_see_bp)
 app.register_blueprint(watermark_bp)
+app.register_blueprint(dashboard_bp)
+
+
 
 if __name__ == "__main__":
     check_table()

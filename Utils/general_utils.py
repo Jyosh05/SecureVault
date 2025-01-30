@@ -76,7 +76,7 @@ def check_table():
                     Action VARCHAR(255),
                     Threat_Level ENUM('low', 'medium', 'high', 'critical') NOT NULL,
                     Event_Time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (User_ID) REFERENCES user(ID) ON DELETE CASCADE
+                    FOREIGN KEY (User_ID) REFERENCES user(ID) ON DELETE SET NULL
                 )
             """)
 
