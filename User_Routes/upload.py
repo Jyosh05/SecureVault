@@ -3,7 +3,7 @@ from Utils.rbac_utils import roles_required
 from Utils.general_utils import *
 from flask import Blueprint, request, render_template, redirect, url_for, flash, session, jsonify
 from werkzeug.utils import secure_filename
-from malware_scan import scan_file_virustotal
+from Utils.malware_scan import scan_file_virustotal
 import os
 
 import datetime
