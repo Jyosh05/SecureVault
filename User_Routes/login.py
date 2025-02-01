@@ -1,4 +1,6 @@
 from flask import Blueprint
+
+from Utils.logging_utils import log_this
 from Utils.general_utils import mydb
 from flask import render_template, request, redirect, url_for, session, jsonify, flash
 from Utils.CSRF_util import generate_csrf_token
@@ -23,6 +25,7 @@ def login():
             return render_template("User_auth+creation/login.html", error="Username and Password Required",
                                    csrf_token=session.get('csrf_token'))
 
+
         # CSRF token validation
         if not token or token != form_token:
             flash("CSRF token invalid", 'error')
@@ -37,6 +40,7 @@ def login():
 
             if not user:
                 print("No user found with given username")
+                log_this("Invalid username or password",'critical')
                 return render_template("User_auth+creation/login.html", error="Invalid username or password",
                                        csrf_token=session.get('csrf_token'))
 
@@ -53,11 +57,15 @@ def login():
                 role = user['Role'].lower()  # Normalize the role to lowercase
                 redirect_url = role_redirects.get(role, 'home')
                 print(f"Redirecting to: {redirect_url}")
+                log_this("Login successful")
                 return redirect(url_for(redirect_url))
 
+
             else:
+                log_this("Invalid username or password",'critical')
                 return render_template("User_auth+creation/login.html", error="Invalid username or password",
                                        csrf_token=session.get('csrf_token'))
+
 
         except Exception as e:
             print("Error:", e)

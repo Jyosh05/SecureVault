@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ nameOfPage }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .chart-container {
+            width: 48%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .charts-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .legend-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .legend-item {
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .summary-panel {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    {% include 'Admin/adminBase.html' %}
+
+    <div class="container">
+        <h1 class="mt-4">{{ nameOfPage }}</h1>
+
+        <!-- Security Overview Panel -->
+        <div class="summary-panel">
+            <h4>Security Overview</h4>
+            <p><strong>Total Actions Logged:</strong> {{ action_counts | sum }}</p>
+            <p><strong>Last Event Time:</strong> {{ event_times[-1] }}</p>
+        </div>
+
+        <div class="charts-wrapper">
+            <!-- Security Levels Pie Chart -->
+            <div class="chart-container">
+                <h3>Security Levels</h3>
+                <canvas id="securityLevelChart"></canvas>
+                <div class="legend-container">
+                    {% for level, color in security_level_colors.items() %}
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: {{ color }}"></span>
+                        <span>{{ level }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Activity Level Chart -->
+            <div class="chart-container">
+                <h3>Activity Level</h3>
+                <canvas id="activityLevelChart"></canvas>
+            </div>
+
+            <!-- User Activity Chart -->
+            <div class="chart-container">
+                <h3>User Activity Level</h3>
+                <canvas id="userActivityChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Top Active Users -->
+        <div class="mt-4">
+            <h3>Top 5 Active Users</h3>
+            <ul class="list-group">
+                {% for user, count in user_activity_data %}
+                <li class="list-group-item">
+                    <strong>{{ user }}</strong> - {{ count }} actions
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Top Triggering Actions -->
+        <div class="mt-4">
+            <h3>Top 5 Triggering Actions</h3>
+            <ul class="list-group">
+                {% for action, count in action_trigger_data %}
+                <li class="list-group-item">
+                    <strong>{{ action }}</strong> - {{ count }} triggers
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Download Button -->
+        <button id="downloadReport" class="btn btn-primary mt-4">Download Report</button>
+    </div>
+
+    <script>
+        // Pass data from Flask to JavaScript
+        var threatLevels = {{ threat_levels | tojson }};
+        var threatLevelCounts = {{ threat_level_counts | tojson }};
+        var actions = {{ actions | tojson }};
+        var actionCounts = {{ action_counts | tojson }};
+        var eventTimes = {{ event_times | tojson }};
+        var eventCounts = {{ event_counts | tojson }};
+
+        // Security Level Chart (Pie Chart)
+        var ctxSecurity = document.getElementById('securityLevelChart').getContext('2d');
+        new Chart(ctxSecurity, {
+            type: 'pie',
+            data: {
+                labels: threatLevels,
+                datasets: [{
+                    data: threatLevelCounts,
+                    backgroundColor: ['green', 'gray', 'orange', 'red']
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        // Activity Level Line Chart
+        var ctxActivity = document.getElementById('activityLevelChart').getContext('2d');
+        new Chart(ctxActivity, {
+            type: 'line',
+            data: {
+                labels: eventTimes,
+                datasets: [{
+                    label: 'Logged Events',
+                    data: eventCounts,
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Time' } },
+                    y: { beginAtZero: true, title: { display: true, text: 'Event Count' } }
+                }
+            }
+        });
+
+        // User Activity Chart (Bar Chart)
+        var ctxUserActivity = document.getElementById('userActivityChart').getContext('2d');
+        new Chart(ctxUserActivity, {
+            type: 'bar',
+            data: {
+                labels: actions,
+                datasets: [{
+                    label: 'Action Count',
+                    data: actionCounts,
+                    backgroundColor: ['blue', 'yellow', 'red', 'green'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Function to download the report
+        document.getElementById('downloadReport').addEventListener('click', function() {
+            let reportData = [
+                ['Action', 'Count'],
+                ...actions.map((action, index) => [action, actionCounts[index]])
+            ];
+            downloadCSV(reportData, 'security_report.csv');
+        });
+
+        // Download CSV function
+        function downloadCSV(data, filename) {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            data.forEach(function(row) {
+                csvContent += row.join(",") + "\n";
+            });
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            link.click();
+        }
+    </script>
+</body>
+</html>
