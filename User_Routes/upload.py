@@ -15,16 +15,36 @@ UPLOAD_FOLDER = 'Files/Perma'  # Adjust this to your upload directory
 # Ensure the upload folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Function to generate a file hash
-def generate_file_hash(filepath):
-    """
-    Generate a SHA-256 hash for a file.
-    """
-    sha256 = hashlib.sha256()
-    with open(filepath, 'rb') as f:
-        while chunk := f.read(8192):
-            sha256.update(chunk)
-    return sha256.hexdigest()
+
+def generate_file_hash(file, algorithm='sha256'):
+    try:
+        # Validate the hashing algorithm
+        if algorithm not in hashlib.algorithms_available:
+            raise ValueError(f"Unsupported hashing algorithm: {algorithm}")
+
+        # Initialize the hash object
+        hasher = hashlib.new(algorithm)
+
+        # If the input is a file path (str), open the file in binary mode
+        if isinstance(file, str):
+            with open(file, 'rb') as f:
+                while chunk := f.read(8192):  # Read in chunks for efficiency
+                    hasher.update(chunk)
+        else:
+            # For file-like objects, ensure the pointer is reset to the start
+            file.seek(0)
+            while chunk := file.read(8192):
+                hasher.update(chunk)
+            file.seek(0)  # Reset the pointer after reading
+
+        # Return the hex digest of the hash
+        return hasher.hexdigest()
+
+    except Exception as e:
+        print(f"Error generating file hash: {e}")
+        raise
+
+""" Add redactor """
 
 @upload_bp.route('/upload', methods=['GET', 'POST'])
 def upload_file():
