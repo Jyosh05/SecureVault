@@ -5,7 +5,6 @@ from flask import Blueprint, request, render_template, redirect, url_for, flash,
 from werkzeug.utils import secure_filename
 from Utils.malware_scan import scan_file_virustotal
 import os
-
 import datetime
 
 # File Upload Blueprint
@@ -18,9 +17,10 @@ BASE_UPLOAD_FOLDER = "Files/Perma"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-@upload_bp.route('/upload', methods=['POST'])
+@upload_bp.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        # Ensure user is logged in
         if 'user_id' not in session:
             flash("Please log in to upload files.", 'error')
             return redirect(url_for('login.login'))
@@ -31,41 +31,42 @@ def upload_file():
         description = request.form.get('description')
         file_classification = request.form.get('file_classification')
 
+        # Validate file input
         if not file or not allowed_file(file.filename):
             flash("Invalid file type or no file uploaded.", 'error')
             return redirect(request.url)
 
         if not is_file_size_valid(file):
-            flash("File exceeds maximum size of 5MB.", 'error')
+            flash("File exceeds the maximum size limit.", 'error')
             return redirect(request.url)
 
-        # Ensure user directory exists
+        # Create user-specific folder if it doesn't exist
         user_folder = os.path.join(BASE_UPLOAD_FOLDER, str(user_id))
         os.makedirs(user_folder, exist_ok=True)
 
-        # Secure filename and save
+        # Save file with a secure filename
         filename = secure_filename(file.filename)
         file_path = os.path.join(user_folder, filename)
         file.save(file_path)
 
-        # Scan file for malware
+        # Scan the file for malware
         scan_result = scan_file_virustotal(file_path)
         if "Scan ID" not in scan_result:
             flash(f"File rejected due to security concerns: {scan_result}", 'error')
-            os.remove(file_path)  # Delete file if malware detected
+            os.remove(file_path)  # Delete the file if it’s flagged
             return redirect(request.url)
 
-        # Generate file hash
+        # Generate a hash for the uploaded file
         file_hash = generate_file_hash(file)
 
-        # Store metadata in the database
+        # Store file metadata in the database
         try:
             mycursor = mydb.cursor()
             query = """
                 INSERT INTO file (User_ID, File_Name, File_Path, File_Size, File_Hash, File_Classification, Title, Description, File_Type)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
-            mycursor.execute(query, (user_id, filename, file_path, os.path.getsize(file_path), file_hash, file_classification, title, description, file.filename.rsplit('.', 1)[1]))
+            mycursor.execute(query, (user_id, filename, file_path, os.path.getsize(file_path), file_hash, file_classification, title, description, filename.rsplit('.', 1)[1]))
             mydb.commit()
             flash("File uploaded successfully!", 'success')
         except Exception as e:
@@ -73,3 +74,5 @@ def upload_file():
             return redirect(request.url)
 
         return redirect(url_for('file.upload_file'))
+
+    return render_template('Features/upload.html')  # Render the upload form template
