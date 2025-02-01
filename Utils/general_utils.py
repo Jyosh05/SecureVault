@@ -124,6 +124,7 @@ def check_table():
                     Duration DATETIME,
                     Privilege ENUM('r', 'd'),
                     Expired BOOLEAN DEFAULT FALSE,
+                    Converted_File_Path VARCHAR(600),
                     FOREIGN KEY (File_ID) REFERENCES file(ID) ON DELETE CASCADE
                 )
             """)
@@ -180,3 +181,11 @@ def is_file_size_valid(file):
     except Exception as e:
         print(f"Error checking file size: {e}")
         return False
+
+
+def temp_file_sharing_upload():
+    upload_folder = "../Files/PDF_to_ImgPdf"
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+
+    return upload_folder
