@@ -21,7 +21,6 @@ def generate_link(file_id):
         # Get the form data
         duration_value = int(request.form['duration'])
         duration_unit = request.form['duration_unit']
-        privilege = request.form['privilege']
 
         # Calculate the expiration date based on the duration
         if duration_unit == 'minutes':
@@ -49,9 +48,9 @@ def generate_link(file_id):
 
         # Insert the link details into the database with the converted PDF file path
         mycursor.execute("""
-                    INSERT INTO temp_file_sharing (File_ID, Sharing_Link, Duration, Privilege, Expired, Converted_File_Path)
-                    VALUES (%s, %s, %s, %s, %s, %s)
-                """, (file_id, token, expiration_time, privilege, False, converted_pdf_path))
+                    INSERT INTO temp_file_sharing (File_ID, Sharing_Link, Duration, Expired, Converted_File_Path)
+                    VALUES (%s, %s, %s, %s, %s)
+                """, (file_id, token, expiration_time, False, converted_pdf_path))
         mydb.commit()
 
         flash(f"Link generated successfully! Share this link: {url_for('access_sharing.access_shared_file', token=token, _external=True)}", 'success')
@@ -60,6 +59,7 @@ def generate_link(file_id):
         # return redirect(url_for('view_files.view_files'))
 
     return render_template('Features/generate_link.html', file_id=file_id)
+
 
 @access_temporary_file_bp.route('/shared-file/<token>', methods=['GET', 'POST'])
 def access_shared_file(token):
@@ -71,56 +71,56 @@ def access_shared_file(token):
         SELECT File_ID, Duration, Expired, Privilege, Converted_File_Path FROM temp_file_sharing
         WHERE Sharing_Link = %s
     """, (token,))
-    result = mycursor1.fetchone()
 
-    if result:
-        file_id = result['File_ID']
-        expiration_time = result['Duration']
-        expired = result['Expired']
-        privilege = result['Privilege']
-        converted_file_path = result['Converted_File_Path']
-
-        current_time = datetime.utcnow()
-
-        if expired:
-            # If expired is True, show the message
-            return "This sharing link has expired.", 403
-        elif expiration_time > current_time:
-            # Retrieve the file details from the 'file' table
-            mycursor2.execute("SELECT * FROM file WHERE ID = %s", (file_id,))
-            file_details = mycursor2.fetchone()
-
-            # Check if the user has the required privilege to view/download the file
-            # Check if the user has the required privilege to view/download the file
-            if privilege == 'r':  # Read permission (to display the file)
-                if converted_file_path:
-                    # If the file has been converted to an image-based format, serve images
-                    if os.path.exists(converted_file_path):
-                        return render_template('Features/shared_file.html', file=file_details, file_path=converted_file_path, privilege=privilege)
-                    else:
-                        return "File not found on the server.", 404
-
-            # elif privilege == 'd':
-            #     # If privilege is 'd', allow downloading the file
-            #     file_path = file_details['File_Path']
-            #     file_name = file_details['File_Name']
-            #
-            #     # Ensure the file exists at the given path
-            #     if os.path.exists(file_path):
-            #         return send_file(file_path, as_attachment=True, download_name=file_name)
-            #     else:
-            #         return "File not found on the server.", 404
-            else:
-                return "You do not have permission to access this file.", 403
+    try:
+        result = mycursor1.fetchone()
+        if result is not None:
+            file_id = result['File_ID']
+            expiration_time = result['Duration']
+            expired = result['Expired']
+            privilege = result['Privilege']
+            converted_file_path = result['Converted_File_Path']
         else:
-            # Mark the link as expired if it's past the expiration time
-            mycursor1.execute("""
-                UPDATE temp_file_sharing SET Expired = TRUE WHERE Sharing_Link = %s
-            """, (token,))
-            mydb.commit()
-            return "This sharing link has expired.", 403
+            # Handle the case when no rows are returned
+            return "No rows found.", 404
+    except mysql.connector.errors.InterfaceError as e:
+        # Handle the 'Unread Result Found' error
+        print("Error: {}".format(e))
+        return "Database error occurred.", 500
+
+    current_time = datetime.utcnow()
+
+    if expired:
+        # If expired is True, show the message
+        return "This sharing link has expired.", 403
+    elif expiration_time > current_time:
+        # Retrieve the file details from the 'file' table
+        mycursor2.execute("SELECT * FROM file WHERE ID = %s", (file_id,))
+        file_details = mycursor2.fetchone()
+
+        # Check if the user has the required privilege to view/download the file
+        if privilege == 'r':  # Read permission (to display the file)
+            if converted_file_path:
+                # If the file has been converted to an image-based format, serve images
+                if os.path.exists(converted_file_path):
+                    return render_template('Features/shared_file.html', file=file_details,
+                                           file_path=converted_file_path, privilege=privilege)
+                else:
+                    return "File not found on the server.", 404
+            else:
+                return "Converted file path is missing.", 404
+
+
+        else:
+            return "You do not have permission to access this file.", 403
     else:
-        return "Invalid or expired link.", 404
+        # Mark the link as expired if it's past the expiration time
+        mycursor1.execute("""
+            UPDATE temp_file_sharing SET Expired = TRUE WHERE Sharing_Link = %s
+        """, (token,))
+        mydb.commit()
+        return "This sharing link has expired.", 403
+
 
 @access_temporary_file_see_bp.route('/serve-file/<int:file_id>', methods=['GET'])
 def serve_file(file_id):

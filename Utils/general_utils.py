@@ -122,7 +122,7 @@ def check_table():
                     File_ID INT NOT NULL,
                     Sharing_Link VARCHAR(255),
                     Duration DATETIME,
-                    Privilege ENUM('r', 'd'),
+                    Privilege ENUM('r') DEFAULT 'r',
                     Expired BOOLEAN DEFAULT FALSE,
                     Converted_File_Path VARCHAR(600),
                     FOREIGN KEY (File_ID) REFERENCES file(ID) ON DELETE CASCADE
