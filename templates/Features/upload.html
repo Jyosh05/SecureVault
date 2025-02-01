@@ -23,7 +23,9 @@
             </ul>
         {% endif %}
         {% endwith %}
-        <form action="{{ url_for('file.upload_file') }}" method="post" enctype="multipart/form-data">
+
+        <!-- The form for file upload -->
+        <form id="upload-form" action="{{ url_for('file.upload_file') }}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="file">Choose file:</label>
                 <input type="file" name="file" id="file" required>
@@ -45,9 +47,16 @@
                 </select>
             </div>
             <div class="form-group">
-                <button type="submit">Upload</button>
+                <button type="submit" id="upload-btn">Upload</button>
             </div>
         </form>
+
+        <!-- Message display -->
+        <div id="message"></div>
+
     </div>
+
+    <!-- Link to external JavaScript file -->
+    <script src="static/js/virus_total_check.js"></script>
 </body>
 </html>

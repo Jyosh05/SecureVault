@@ -4,8 +4,9 @@ from Utils.general_utils import *
 from flask import Blueprint, request, render_template, redirect, url_for, flash, session, jsonify
 from werkzeug.utils import secure_filename
 from Utils.malware_scan import scan_file_virustotal
+import requests
 import os
-import datetime
+from config import VIRUSTOTAL_API_KEY
 
 # File Upload Blueprint
 upload_bp = Blueprint('file', __name__, template_folder='templates')
@@ -76,3 +77,26 @@ def upload_file():
         return redirect(url_for('file.upload_file'))
 
     return render_template('Features/upload.html')  # Render the upload form template
+
+
+def scan_file():
+    """Handle file scanning with VirusTotal"""
+    file = request.files.get('file')
+
+    if not file:
+        return jsonify({"error": "No file provided"}), 400
+
+    url = "https://www.virustotal.com/api/v3/files"
+    headers = {"x-apikey": VIRUSTOTAL_API_KEY}
+
+    try:
+        files = {"file": file}
+        response = requests.post(url, headers=headers, files=files)
+
+        if response.status_code == 200:
+            result = response.json()
+            return jsonify(result)
+        else:
+            return jsonify({"error": "Error with VirusTotal API"}), response.status_code
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
