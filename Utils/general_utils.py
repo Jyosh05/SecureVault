@@ -1,7 +1,7 @@
 import mysql.connector
 from config import DB_Config
 import os
-from config import ALLOWED_EXTENSIONS
+import hashlib
 
 
 mydb = mysql.connector.connect(
@@ -181,6 +181,34 @@ def is_file_size_valid(file):
     except Exception as e:
         print(f"Error checking file size: {e}")
         return False
+
+def generate_file_hash(file, algorithm='sha256'):
+    try:
+        # Validate the hashing algorithm
+        if algorithm not in hashlib.algorithms_available:
+            raise ValueError(f"Unsupported hashing algorithm: {algorithm}")
+
+        # Initialize the hash object
+        hasher = hashlib.new(algorithm)
+
+        # If the input is a file path (str), open the file in binary mode
+        if isinstance(file, str):
+            with open(file, 'rb') as f:
+                while chunk := f.read(8192):  # Read in chunks for efficiency
+                    hasher.update(chunk)
+        else:
+            # For file-like objects, ensure the pointer is reset to the start
+            file.seek(0)
+            while chunk := file.read(8192):
+                hasher.update(chunk)
+            file.seek(0)  # Reset the pointer after reading
+
+        # Return the hex digest of the hash
+        return hasher.hexdigest()
+
+    except Exception as e:
+        print(f"Error generating file hash: {e}")
+        raise
 
 
 def temp_file_sharing_upload():

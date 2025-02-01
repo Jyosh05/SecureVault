@@ -9,8 +9,6 @@ DB_Config = {
     'port': 3306
 }
 
-ALLOWED_EXTENSIONS = {'pdf','txt','docx','xlsx','pptx'}
-
 
 so_config = {
     'username': 'JohnAdmin',
@@ -18,3 +16,5 @@ so_config = {
     'email': 'jyoshwlitha@gmail.com',
     'role': 'so'
 }
+
+VIRUSTOTAL_API_KEY = "09d3f2180d9e3bf9aa9b3b312ddc352fb5e4f9049d2442fd789a589e3bbc26d5"
