@@ -5,13 +5,15 @@ import io
 from Utils.general_utils import temp_file_sharing_upload
 
 
-def pdf_to_images(pdf_path):
-    """Converts a PDF to a list of image objects"""
+def pdf_to_images(pdf_path, dpi=300):
+    """Converts a PDF to a list of image objects with custom resolution"""
     doc = fitz.open(pdf_path)
     images = []
     for page_num in range(doc.page_count):
         page = doc.load_page(page_num)  # Load the page
-        pix = page.get_pixmap()  # Render the page as an image
+        # Increase the scale factor based on desired DPI (300 DPI is a common print resolution)
+        mat = fitz.Matrix(dpi / 72, dpi / 72)  # 72 is the default DPI for rendering
+        pix = page.get_pixmap(matrix=mat)  # Render the page at the specified DPI
         img_bytes = pix.tobytes("png")  # Convert to bytes (can be other formats like jpeg)
         img = Image.open(io.BytesIO(img_bytes))  # Open image with PIL
         images.append(img)
@@ -42,16 +44,16 @@ def images_to_pdf(pdf_file_name, images, output_pdf_path):
     print(f"PDF saved at {output_pdf_path}")
 
 
-def convert_pdf_to_image_pdf(pdf_path, output_directory):
-    """Converts the PDF to an image-based PDF and saves with the original filename"""
+def convert_pdf_to_image_pdf(pdf_path, output_directory, dpi=300):
+    """Converts the PDF to an image-based PDF with improved resolution"""
     # Extract the filename without extension
     base_filename = os.path.splitext(os.path.basename(pdf_path))[0]
 
     # Create the output file path using the original filename
     output_pdf_path = os.path.join(output_directory, f"{base_filename}_converted.pdf")
 
-    # Convert PDF pages to images
-    images = pdf_to_images(pdf_path)
+    # Convert PDF pages to images with custom resolution
+    images = pdf_to_images(pdf_path, dpi)
 
     # Convert images back to PDF and save it
     images_to_pdf(base_filename, images, output_pdf_path)
