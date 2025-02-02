@@ -18,7 +18,6 @@ def generate_file_hash(filepath, algorithm='sha256'):
         print(f"Error computing hash: {e}")
         return None
 
-
 def check_file_integrity(file_id):
     """Check if a stored file matches its original hash."""
     try:

@@ -3,10 +3,12 @@ from Utils.rbac_utils import roles_required
 from Utils.general_utils import *
 from flask import Blueprint, request, render_template, redirect, url_for, flash, session, jsonify
 from werkzeug.utils import secure_filename
-from Utils.malware_scan import scan_file_virustotal
+from Utils.malware_scan import *
+from Utils.file_integrity import *
 import requests
 import os
 from config import VIRUSTOTAL_API_KEY
+
 
 # File Upload Blueprint
 upload_bp = Blueprint('file', __name__, template_folder='templates')
@@ -58,7 +60,7 @@ def upload_file():
             return redirect(request.url)
 
         # Generate a hash for the uploaded file
-        file_hash = generate_file_hash(file)
+        file_hash = generate_file_hash(file_path)
 
         # Store file metadata in the database
         try:

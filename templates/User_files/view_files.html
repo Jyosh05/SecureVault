@@ -23,6 +23,17 @@
                     <img src="{{ url_for('static', filename='previews/' + file.File_Type + '.png') }}" alt="File Icon">
                 </div>
                 <div class="file-uploaded-at">{{ file.Uploaded_At.strftime('%Y-%m-%d') }}</div>
+
+                <!-- Display the integrity status -->
+                <div class="file-integrity-status">
+                    <strong>Integrity Status: </strong>
+                    {% if 'modified' in file.integrity_status %}
+                        <span style="color: red; font-weight: bold;">{{ file.integrity_status }}</span>
+                    {% else %}
+                        <span style="color: green; font-weight: bold;">{{ file.integrity_status }}</span>
+                    {% endif %}
+                </div>
+
                 <div class="options">
                     <div class="dots">⋮</div>  <!-- Three horizontal dots icon -->
                 </div>
@@ -36,4 +47,5 @@
     </div>
 </body>
 </html>
+
 
