@@ -42,8 +42,25 @@
             user-select: none;
         }
     </style>
+
+    <script language="javascript">
+        var noPrint = true;
+        var noCopy = true;
+        var noScreenshot = true;
+        var autoBlur = true;
+        </script>
+
+    <script type="text/javascript" src="https://pdfanticopy.com/noprint.js"></script>
 </head>
 <body>
+    <script language="javascript">
+        var noPrint = true;
+        var noCopy = true;
+        var noScreenshot = true;
+        var autoBlur = true;
+    </script>
+
+    <script type="text/javascript" src="https://pdfanticopy.com/noprint.js"></script>
 
     <h1>Shared File: {{ file.File_Name }}</h1>
 
@@ -90,6 +107,8 @@
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
             });
+
+
 
         </script>
 
