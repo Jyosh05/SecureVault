@@ -8,7 +8,8 @@ from config import so_config
 
 role_redirects = {
     'so': 'admin.admin_home',
-    'user': 'login.home'
+    'patient': 'login.home',
+    'doctor': 'doctor.doctor_home'
 }
 
 def roles_required(*roles):

@@ -26,7 +26,7 @@ def check_table():
                     Username VARCHAR(255) NOT NULL UNIQUE,
                     Password VARCHAR(255) NOT NULL,
                     Email VARCHAR(255) NOT NULL,
-                    Role ENUM('so', 'user') DEFAULT 'user'
+                    Role ENUM('so', 'patient', 'doctor') DEFAULT 'patient'
                 )
             """)
 

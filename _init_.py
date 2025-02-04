@@ -11,6 +11,8 @@ from Admin.home import admin_bp
 from Utils.general_utils import *
 from Utils.rbac_utils import create_so_user
 from Admin.Dashboard import dashboard_bp
+from Admin.create_doctor import create_doctor_bp
+from Doctor.home import doctor_bp
 
 
 
@@ -35,6 +37,9 @@ app.register_blueprint(access_temporary_file_bp)
 app.register_blueprint(access_temporary_file_see_bp)
 app.register_blueprint(watermark_bp)
 app.register_blueprint(dashboard_bp)
+app.register_blueprint(doctor_bp)
+app.register_blueprint(create_doctor_bp)
+
 
 
 

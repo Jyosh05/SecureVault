@@ -9,12 +9,12 @@ from Utils.rbac_utils import roles_required
 redact_bp = Blueprint('redact',__name__, template_folder='templates')
 
 @redact_bp.route('/redact')
-@roles_required('user')
+@roles_required('patient')
 def redact():
     return render_template('Features/PDF_Redactor.html')
 
 @redact_bp.route('/redact_upload', methods=['POST'])
-@roles_required('user')
+@roles_required('patient')
 def redact_upload():
     if 'file' not in request.files:
         flash('No file part', 'error')
