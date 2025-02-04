@@ -76,7 +76,7 @@ def login():
 
 
 @login_bp.route("/home",)
-@roles_required('user')
+@roles_required('patient')
 def home():
     session.pop('csrf_token',None)
     print(session)

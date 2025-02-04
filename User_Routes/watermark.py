@@ -8,7 +8,7 @@ from Utils.rbac_utils import roles_required
 watermark_bp = Blueprint('watermark', __name__ , template_folder='templates')
 
 @watermark_bp.route('/watermark')
-@roles_required('user')
+@roles_required('patient')
 def watermark():
     return render_template('Features/PDF_Watermark.html')
 
