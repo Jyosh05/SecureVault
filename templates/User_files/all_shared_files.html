@@ -28,6 +28,10 @@
                     <p><strong>Date Shared:</strong> {{ file.Date_Shared }}</p>
                     <a href="{{ url_for('view_pdf.view_each_pdf', share_id=file.Share_ID) }}" class="open-btn">Open</a>
 
+                    {% if not file.Has_Downloaded %}
+                        <a href="{{ url_for('share_file.download_file', share_id=file.Share_ID) }}" class="btn btn-primary">Download</a>
+
+                    {% endif %}
 
                 </div>
 

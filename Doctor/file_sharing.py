@@ -1,11 +1,14 @@
-from flask import Blueprint, request, jsonify, session, render_template, flash, redirect, url_for
+from flask import Blueprint, request, jsonify, session, render_template, flash, send_file, redirect, url_for
 from Utils.general_utils import temp_file_sharing_upload, mydb
 from Utils.file_sharing_utils import convert_pdf_to_image_pdf
+from Utils.rbac_utils import *
+import os
 
 share_file_bp = Blueprint('share_file', __name__, template_folder='templates')
 
 
 @share_file_bp.route('/share/<int:file_id>', methods=['GET', 'POST'])
+@roles_required('patient', 'doctor')
 def share_file(file_id):
     if 'user_id' not in session:
         flash('Unauthorized access.', 'error')
@@ -58,6 +61,7 @@ def share_file(file_id):
     return render_template('Doctor/share_file.html', file_id=file_id, file_name=file_name)
 
 @share_file_bp.route('/view_shared_files', methods=['GET'])
+@roles_required('patient', 'doctor')
 def view_shared_files():
     if 'user_id' not in session:
         return jsonify({'error': 'Unauthorized'}), 401
@@ -80,7 +84,7 @@ def view_shared_files():
 
     elif user_role == 'patient':
         mycursor.execute("""
-            SELECT fs.Share_ID, f.Title, fs.Converted_File_Path, fs.Date_Shared, u.Username AS Shared_By 
+            SELECT fs.Share_ID, f.Title, fs.Converted_File_Path, fs.Date_Shared, u.Username AS Shared_By, fs.Has_Downloaded 
             FROM file_sharing fs
             JOIN file f ON fs.File_ID = f.ID
             JOIN user u ON fs.Shared_By_User_ID = u.ID
@@ -91,3 +95,47 @@ def view_shared_files():
 
     else:
         return jsonify({'error': 'Invalid role'}), 403
+
+@share_file_bp.route('/download_file/<int:share_id>', methods=['GET'])
+@roles_required('patient')
+def download_file(share_id):
+    if 'user_id' not in session:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    user_id = session['user_id']
+
+    mycursor = mydb.cursor(dictionary=True)
+
+    # Retrieve the sharing record based on Share_ID
+    mycursor.execute("""
+        SELECT fs.File_ID, fs.Converted_File_Path, fs.Has_Downloaded
+        FROM file_sharing fs
+        WHERE fs.Share_ID = %s AND fs.Shared_With_User_ID = %s
+    """, (share_id, user_id))
+
+    file_record = mycursor.fetchone()
+
+    if file_record:
+        converted_file_path = file_record['Converted_File_Path']
+        has_downloaded = file_record['Has_Downloaded']
+
+        # If the file hasn't been downloaded yet, proceed with the download
+        if not has_downloaded:
+            if converted_file_path and os.path.exists(converted_file_path):
+                # Update the 'has_downloaded' field to TRUE
+                mycursor.execute("""
+                    UPDATE file_sharing
+                    SET has_downloaded = TRUE
+                    WHERE Share_ID = %s
+                """, (share_id,))
+                mydb.commit()
+
+                # Serve the file for download
+                return send_file(converted_file_path, as_attachment=True)
+
+            else:
+                return "File not found.", 404
+        else:
+            return jsonify({"error": "You have already downloaded this file."}), 400
+    else:
+        return jsonify({"error": "Unauthorized or invalid share ID."}), 403
