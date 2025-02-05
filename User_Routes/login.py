@@ -53,7 +53,7 @@ def login():
 
 
                 role = user['Role'].lower()
-                redirect_url = role_redirects.get(role, 'login.home')
+                redirect_url = role_redirects.get(role, 'home')
                 print(f"Redirecting to: {redirect_url}")
                 log_this("Login successful")
                 return redirect(url_for(redirect_url))

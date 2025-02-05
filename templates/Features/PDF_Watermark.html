@@ -35,6 +35,9 @@
             <button type="submit">Upload and Watermark</button>
         </div>
     </form>
+    <div>
+        <a href="{{ url_for(role_redirects.get(session.get('role','home'))) }}">Back To Home</a>
+    </div>
 </div>
 
 </body>

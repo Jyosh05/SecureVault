@@ -4,14 +4,14 @@ from flask import Blueprint, render_template,request,send_file,url_for,flash,red
 from werkzeug.utils import secure_filename
 from Utils.general_utils import make_dir_for_temp_upload, allowed_file
 from Utils.PDF_Redaction import redact_pdf
-from Utils.rbac_utils import roles_required
+from Utils.rbac_utils import roles_required, role_redirects
 
 redact_bp = Blueprint('redact',__name__, template_folder='templates')
 
 @redact_bp.route('/redact')
-@roles_required('patient')
+@roles_required('patient','doctor')
 def redact():
-    return render_template('Features/PDF_Redactor.html')
+    return render_template('Features/PDF_Redactor.html', role_redirects= role_redirects)
 
 @redact_bp.route('/redact_upload', methods=['POST'])
 @roles_required('patient')
