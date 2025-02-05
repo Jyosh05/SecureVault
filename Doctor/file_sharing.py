@@ -9,7 +9,7 @@ share_file_bp = Blueprint('share_file', __name__, template_folder='templates')
 def share_file(file_id):
     if 'user_id' not in session:
         flash('Unauthorized access.', 'error')
-        return redirect(url_for('auth.login'))  # Redirect to login page if not logged in
+        return redirect(url_for('login.login'))  # Redirect to login page if not logged in
 
     mycursor = mydb.cursor(dictionary=True)
 
