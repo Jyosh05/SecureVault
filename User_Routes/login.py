@@ -44,7 +44,6 @@ def login():
                 return render_template("User_auth+creation/login.html", error="Invalid username or password",
                                        csrf_token=session.get('csrf_token'))
 
-            # Check if password matches
             if password == user['Password']:
                 print("Password match successful")
                 #Adds in UserID and Username into the session
@@ -53,7 +52,6 @@ def login():
                 session['role'] = user['Role']
 
 
-                # Redirect the user based on their role
                 role = user['Role'].lower()
                 redirect_url = role_redirects.get(role, 'login.home')
                 print(f"Redirecting to: {redirect_url}")
