@@ -34,6 +34,9 @@
             {% endif %}
         {% endwith %}
     </form>
+    <div class="form-group">
+        <a href="{{ url_for(role_redirects.get(session.get('role','home'))) }}" class="back-button">Back To Home</a>
+    </div>
 </div>
 
 </body>

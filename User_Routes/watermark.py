@@ -3,14 +3,14 @@ from flask import Blueprint, render_template, request, send_file, flash, redirec
 from werkzeug.utils import secure_filename
 from Utils.general_utils import make_dir_for_temp_upload,allowed_file
 from Utils.Watermarker import watermark_pdf
-from Utils.rbac_utils import roles_required
+from Utils.rbac_utils import roles_required, role_redirects
 
 watermark_bp = Blueprint('watermark', __name__ , template_folder='templates')
 
 @watermark_bp.route('/watermark')
-@roles_required('patient')
+@roles_required('patient','doctor')
 def watermark():
-    return render_template('Features/PDF_Watermark.html')
+    return render_template('Features/PDF_Watermark.html', role_redirects=role_redirects)
 
 
 @watermark_bp.route('/watermark_upload', methods=['POST'])
