@@ -7,6 +7,7 @@ UPLOAD_FOLDER = 'Files/Perma'
 view_files_bp = Blueprint('view_files', __name__, template_folder='templates')
 
 @view_files_bp.route('/view', methods=['GET'])
+@roles_required('doctor')
 def view_files():
     if 'user_id' not in session:
         flash("Please log in to view your files.", 'error')

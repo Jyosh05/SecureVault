@@ -21,6 +21,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 @upload_bp.route('/upload', methods=['GET', 'POST'])
+@roles_required('doctor')
 def upload_file():
     if request.method == 'POST':
         # Ensure user is logged in
