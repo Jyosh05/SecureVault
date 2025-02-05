@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Files</title>
-    <link rel="stylesheet" href="/static/css/view_files.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view_files.css') }}">
 </head>
 <body>
-{% include 'navbar.html' %}
+    {% include 'navbar.html' %}
+
     <div class="container">
         <h1>Welcome to {{ username }}'s Vault</h1>
 
@@ -17,17 +18,21 @@
 
         <div class="file-grid">
             {% for file in files %}
-            <div class="file-card" onclick="viewPDF('{{ url_for('static', filename='Files/' + file.File_Path) }}')">
-                <div class="file-title">{{ file.Title }}</div>
+            <div class="file-card" onclick="viewPDF('{{ url_for('static', filename='uploads/' + file.file_path) }}')">
+                <div class="file-title">{{ file.title }}</div>
+
                 <div class="file-icon">
-                    <img src="{{ url_for('static', filename='previews/' + file.File_Type + '.png') }}" alt="File Icon">
+                    <img src="{{ url_for('static', filename='previews/' + file.file_type + '.png') }}"
+                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='previews/default.png') }}';"
+                         alt="File Icon">
                 </div>
-                <div class="file-uploaded-at">{{ file.Uploaded_At.strftime('%Y-%m-%d') }}</div>
+
+                <div class="file-uploaded-at">Upload Date: {{ file.uploaded_at }}</div>
 
                 <!-- Display the integrity status -->
                 <div class="file-integrity-status">
                     <strong>Integrity Status: </strong>
-                    {% if 'modified' in file.integrity_status %}
+                    {% if 'modified' in file.integrity_status|lower %}
                         <span style="color: red; font-weight: bold;">{{ file.integrity_status }}</span>
                     {% else %}
                         <span style="color: green; font-weight: bold;">{{ file.integrity_status }}</span>
@@ -37,9 +42,11 @@
                 <div class="options">
                     <div class="dots">⋮</div>  <!-- Three horizontal dots icon -->
                 </div>
-                <a href="{{ url_for('generate_link.generate_link', file_id=file.ID) }}">Generate Sharing Link</a>
+
+                <a href="{{ url_for('generate_link.generate_link', file_id=file.id) }}">Generate Sharing Link</a>
             </div>
             {% endfor %}
+
             {% if not files %}
             <p>You have not uploaded any files yet.</p>
             {% endif %}
@@ -47,5 +54,3 @@
     </div>
 </body>
 </html>
-
-
