@@ -49,6 +49,9 @@ def convert_pdf_to_image_pdf(pdf_path, output_directory, dpi=300):
     # Extract the filename without extension
     base_filename = os.path.splitext(os.path.basename(pdf_path))[0]
 
+    # Ensure the output directory ends with a separator
+    output_directory = output_directory.rstrip(os.sep)
+
     # Create the output file path using the original filename
     output_pdf_path = os.path.join(output_directory, f"{base_filename}_converted.pdf")
 

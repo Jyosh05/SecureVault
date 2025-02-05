@@ -215,7 +215,7 @@ def generate_file_hash(file, algorithm='sha256'):
 
 
 def temp_file_sharing_upload():
-    upload_folder = "Files/Sharing"
+    upload_folder = "../Files/Sharing"
     if not os.path.exists(upload_folder):
         os.makedirs(upload_folder, exist_ok=True)
 
