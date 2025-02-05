@@ -54,8 +54,8 @@ def login():
 
 
                 # Redirect the user based on their role
-                role = user['Role'].lower()  # Normalize the role to lowercase
-                redirect_url = role_redirects.get(role, 'home')
+                role = user['Role'].lower()
+                redirect_url = role_redirects.get(role, 'login.home')
                 print(f"Redirecting to: {redirect_url}")
                 log_this("Login successful")
                 return redirect(url_for(redirect_url))

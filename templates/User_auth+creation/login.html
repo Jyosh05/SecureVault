@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-</head>
+    <link rel="stylesheet" href="../../static/css/login.css">  </head>
 <body>
+    <div class="login-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -14,16 +15,16 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-    <h1>Login</h1>
-    <form method="POST" action="/">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username"><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password"><br>
-        <button type="submit">Login</button>
-        <a href="{{ url_for('register.register') }}">Register</a>
-
-    </form>
+        <h1>Login</h1>
+        <form method="POST" action="/">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username"><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"><br>
+            <button type="submit">Login</button>
+            <a href="{{ url_for('register.register') }}">Register</a>
+        </form>
+    </div>
 </body>
 </html>
