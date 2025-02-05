@@ -79,3 +79,10 @@ def home():
     session.pop('csrf_token',None)
     print(session)
     return render_template("home.html")
+
+
+@login_bp.route("/logout")
+def logout():
+    # Clear the session
+    session.clear()
+    return redirect("/")
