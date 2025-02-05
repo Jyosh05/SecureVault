@@ -50,6 +50,7 @@ def view_each_pdf(share_id):
 from flask import send_file
 
 @view_pdf_bp.route('/serve-file/<int:file_id>', methods=['GET'])
+@roles_required('doctor', 'patient')
 def serve_file(file_id):
     mycursor = mydb.cursor(dictionary=True)
 
