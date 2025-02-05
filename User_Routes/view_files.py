@@ -3,8 +3,7 @@ from Utils.rbac_utils import roles_required
 from Utils.general_utils import *
 from Utils.file_integrity import check_file_integrity
 
-# Path to the upload folder
-UPLOAD_FOLDER = 'uploads/'
+UPLOAD_FOLDER = 'Files/Perma'
 view_files_bp = Blueprint('view_files', __name__, template_folder='templates')
 
 @view_files_bp.route('/view', methods=['GET'])
@@ -13,12 +12,12 @@ def view_files():
         flash("Please log in to view your files.", 'error')
         return redirect(url_for('login.login'))
 
-    user_id = session['user_id']  # Get the logged-in user's ID
+    user_id = session['user_id']
 
     try:
         mycursor = mydb.cursor(dictionary=True)
 
-        # Retrieve the user's name
+        # Retrieve username
         mycursor.execute("SELECT Username FROM user WHERE ID = %s", (user_id,))
         user = mycursor.fetchone()
         username = user['Username'] if user else "Unknown User"
@@ -33,16 +32,20 @@ def view_files():
         mycursor.execute(query, (user_id,))
         files = mycursor.fetchall()
 
-        # Check integrity for each file
+        print(f"Files Retrieved from DB: {files}")  # Debugging print
+
         file_details = []
         for file in files:
             file_id = file['ID']
             file_path = file['File_Path']
 
-            # Check file integrity
-            integrity_status = check_file_integrity(file_id)
+            try:
+                integrity_status = check_file_integrity(file_id)
+            except Exception as e:
+                integrity_status = f"Error checking integrity: {e}"
 
-            # Append file details and integrity status
+            print(f"File ID: {file_id}, Title: {file['Title']}, Status: {integrity_status}")  # Debugging print
+
             file_details.append({
                 'id': file_id,
                 'title': file['Title'],
@@ -52,10 +55,9 @@ def view_files():
                 'integrity_status': integrity_status
             })
 
-        # If files exist, render them in the template
-        return render_template('User_files/view_files.html', username=username, files=files)
+        return render_template('User_files/view_files.html', username=username, files=file_details)
 
     except Exception as e:
+        print(f"Error in view_files: {e}")  # Debugging print
         flash(f"Error retrieving files: {e}", 'error')
         return render_template('User_files/view_files.html', files=[])
-

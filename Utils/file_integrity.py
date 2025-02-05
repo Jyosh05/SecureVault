@@ -6,8 +6,11 @@ from werkzeug.utils import secure_filename
 import os
 import hashlib
 
+
+UPLOAD_FOLDER = 'Files/Perma'
+
+
 def generate_file_hash(filepath, algorithm='sha256'):
-    """Generate hash for file integrity verification."""
     hasher = hashlib.new(algorithm)
     try:
         with open(filepath, 'rb') as file:
@@ -19,7 +22,6 @@ def generate_file_hash(filepath, algorithm='sha256'):
         return None
 
 def check_file_integrity(file_id):
-    """Check if a stored file matches its original hash."""
     try:
         cursor = mydb.cursor(dictionary=True)
         cursor.execute("SELECT File_Path, File_Hash FROM file WHERE ID = %s", (file_id,))
@@ -28,17 +30,16 @@ def check_file_integrity(file_id):
         if not result:
             return "File not found in database."
 
-        file_path = result['File_Path']
-        stored_hash = result['File_Hash']
+        corrected_db_path = result['File_Path'].replace("\\", "/")
+        normalized_path = os.path.normpath(corrected_db_path)
+        print(f"Checking integrity for: {normalized_path}")  # Debugging
 
-        if not os.path.exists(file_path):
+        if not os.path.exists(normalized_path):
             return "File missing from storage."
 
-        # Compute the new hash
-        new_hash = generate_file_hash(file_path)
+        new_hash = generate_file_hash(normalized_path)
 
-        # Compare hashes
-        if new_hash == stored_hash:
+        if new_hash == result['File_Hash']:
             return "File is intact."
         else:
             return "File has been modified or tampered with!"
