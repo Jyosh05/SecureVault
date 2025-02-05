@@ -12,7 +12,8 @@ from Utils.rbac_utils import create_so_user
 from Admin.Dashboard import dashboard_bp
 from Admin.create_doctor import create_doctor_bp
 from Doctor.home import doctor_bp
-
+from Doctor.file_sharing import share_file_bp
+# from User_Routes.view_each_pdf import view_pdf_bp
 
 
 #PLEASE REGISTER THE BLUEPRINT
@@ -35,7 +36,8 @@ app.register_blueprint(watermark_bp)
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(doctor_bp)
 app.register_blueprint(create_doctor_bp)
-
+app.register_blueprint(share_file_bp)
+# app.register_blueprint(view_pdf_bp)
 
 
 

@@ -119,13 +119,16 @@ def check_table():
             mycursor.execute("""
                 CREATE TABLE file_sharing (
                     Share_ID INT AUTO_INCREMENT PRIMARY KEY,
+                    File_ID INT NOT NULL,  
                     Converted_File_Path VARCHAR(600) NOT NULL, 
                     Shared_By_User_ID INT NOT NULL,  
                     Shared_With_User_ID INT NOT NULL,  
                     Has_Downloaded BOOLEAN DEFAULT FALSE,  
                     Date_Shared TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (Shared_By_User_ID) REFERENCES user(ID) ON DELETE CASCADE,
-                    FOREIGN KEY (Shared_With_User_ID) REFERENCES user(ID) ON DELETE CASCADE
+                    FOREIGN KEY (Shared_With_User_ID) REFERENCES user(ID) ON DELETE CASCADE,
+                    FOREIGN KEY (File_ID) REFERENCES file(ID) ON DELETE CASCADE
+
                 )
             """)
 
@@ -212,8 +215,8 @@ def generate_file_hash(file, algorithm='sha256'):
 
 
 def temp_file_sharing_upload():
-    upload_folder = "../Files/PDF_to_ImgPdf"
+    upload_folder = "Files/Sharing"
     if not os.path.exists(upload_folder):
-        os.makedirs(upload_folder)
+        os.makedirs(upload_folder, exist_ok=True)
 
     return upload_folder

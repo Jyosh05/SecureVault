@@ -56,9 +56,9 @@ def view_files():
                 'integrity_status': integrity_status
             })
 
-        return render_template('User_files/view_files.html', username=username, files=file_details)
+        return render_template('Doctor/view_files.html', username=username, files=file_details)
 
     except Exception as e:
         print(f"Error in view_files: {e}")  # Debugging print
         flash(f"Error retrieving files: {e}", 'error')
-        return render_template('User_files/view_files.html', files=[])
+        return render_template('Doctor/view_files.html', files=[])

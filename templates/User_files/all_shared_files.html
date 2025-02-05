@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Medical Reports</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shared_files.css') }}">
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="container">
+        <h1>Your Medical Reports</h1>
+
+        <div class="file-grid">
+            {% for file in share_files %}
+            <div class="file-card">
+                <!-- PDF Icon or Thumbnail -->
+                <div class="file-thumbnail">
+                    <img src="{{ url_for('static', filename='previews/pdf.png') }}">
+
+                </div>
+
+                <!-- File Details -->
+                <div class="file-info">
+                    <h3>{{ file.Title }}</h3>
+                    <p><strong>Shared By:</strong> {{ file.Shared_By }}</p>
+                    <p><strong>Date Shared:</strong> {{ file.Date_Shared }}</p>
+
+                </div>
+
+            </div>
+            {% endfor %}
+
+            {% if not share_files %}
+            <p>No reports have been shared with you.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
