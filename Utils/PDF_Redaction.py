@@ -41,6 +41,6 @@ def redact_pdf(input_pdf_path, output_pdf_path):
     # Save the redacted PDF
     doc.save(output_pdf_path)
     doc.close()
-
+    print("redactor function used")
 
 

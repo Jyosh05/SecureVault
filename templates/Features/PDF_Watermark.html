@@ -4,41 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload PDF to Apply Watermark</title>
+    <link rel="stylesheet" href="../static/css/watermark.css">
 </head>
 <body>
-
-<header>
-    <h2>PDF Watermarking</h2>
-</header>
-
-<div>
+<div class="container">
     <h1>Upload PDF to Apply Watermark</h1>
-
+    <p>Upload a PDF file to apply a watermark.</p>
     <!-- Display flash messages (if any) -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <div>
+            <div class="error-message">
                 {% for category, message in messages %}
                     <p>{{ message }}</p>
                 {% endfor %}
             </div>
         {% endif %}
     {% endwith %}
-
     <!-- Form for uploading the PDF -->
     <form method="POST" enctype="multipart/form-data" action="{{ url_for('watermark.watermark_upload') }}">
-        <div>
-            <label for="file">Choose PDF file:</label>
-            <input type="file" name="file" id="file" accept="application/pdf" required>
+        <div class="form-group">
+            <label for="file">Choose a PDF file</label>
+            <input type="file" class="form-control" name="file" id="file" accept="application/pdf" required>
         </div>
-        <div>
+        <div class="form-group">
             <button type="submit">Upload and Watermark</button>
         </div>
     </form>
-    <div>
-        <a href="{{ url_for(role_redirects.get(session.get('role','home'))) }}">Back To Home</a>
+    <div class="form-group">
+        <a href="{{ url_for(role_redirects.get(session.get('role','home'))) }}" class="back-button">Back To Home</a>
     </div>
 </div>
-
 </body>
 </html>

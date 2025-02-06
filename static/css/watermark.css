@@ -1,0 +1,97 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+/* Container for Form */
+.container {
+    max-width: 600px;
+    padding: 20px;
+    background-color: transparent;
+    border-radius: 8px;
+}
+
+/* Title Styling */
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Subtitle or description styling */
+p {
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Label Styling */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* File Input Styling */
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 12px; /* Adjusted padding to match buttons */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: transparent;
+    cursor: pointer; /* Add pointer cursor for better UX */
+}
+
+/* Buttons Styling */
+.form-group button,
+.back-button {
+    width: 100%;
+    padding: 12px; /* Matched padding with input fields */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block; /* Important for <a> tag */
+    text-decoration: none;  /* Remove underline from <a> */
+    text-align: center;    /* Center text in button */
+    box-sizing: border-box; /* Include padding and border in width */
+}
+
+/* Hover Effect for Buttons */
+.form-group button:hover,
+.back-button:hover {
+    background-color: #0062cc;
+}
+
+/* Error Message Styling */
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* Success Message Styling */
+.success-message {
+    color: green;
+    text-align: center;
+    margin-top: 15px;
+}

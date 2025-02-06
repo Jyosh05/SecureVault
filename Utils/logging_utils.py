@@ -30,11 +30,11 @@ def log_this(event, threat_level='low'):
     user_id = session.get('user_id')  # Get user_id from session, no default needed
 
     # Check if user_id exists in the session and is not None
-    if user_id is None:
-        user_id = "unknown"  # Set to "unknown" if not logged in
-    else:
-        # Ensure it's an integer if it exists
-        user_id = int(user_id)
+    # if user_id is None:
+    #     user_id = "unknown"  # Set to "unknown" if not logged in
+    # else:
+    #     # Ensure it's an integer if it exists
+    #     user_id = int(user_id)
 
     mycursor.execute("SELECT MAX(ID) FROM audit_log")  # Correct table name
     actual_id = mycursor.fetchone()

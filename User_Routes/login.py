@@ -84,5 +84,6 @@ def home():
 @login_bp.route("/logout")
 def logout():
     # Clear the session
+    log_this('User logged out successfully')
     session.clear()
     return redirect("/")

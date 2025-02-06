@@ -8,6 +8,7 @@ from Utils.file_integrity import *
 import requests
 import os
 from config import VIRUSTOTAL_API_KEY
+from Utils.logging_utils import log_this
 
 
 # File Upload Blueprint
@@ -37,10 +38,12 @@ def upload_file():
         # Validate file input
         if not file or not allowed_file(file.filename):
             flash("Invalid file type or no file uploaded.", 'error')
+            log_this('Invalid file type or no file uploaded', 'high')
             return redirect(request.url)
 
         if not is_file_size_valid(file):
             flash("File exceeds the maximum size limit.", 'error')
+            log_this('User exceeds file size limit', 'critical')
             return redirect(request.url)
 
         # Create user-specific folder if it doesn't exist
