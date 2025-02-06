@@ -1430,5 +1430,19 @@
             "Name"
         ],
         "label":1
+    },
+    {
+        "text":"T0633801H",
+        "pii_types":[
+            "NRIC"
+        ],
+        "label":1
+    },
+    {
+        "text":"S0927981A",
+        "pii_types":[
+            "NRIC"
+        ],
+        "label":1
     }
 ]

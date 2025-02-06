@@ -20,7 +20,6 @@ def load_AI_model():
     try:
         model = joblib.load(MODEL_FILE)
         mlb = joblib.load(LABEL_ENCODER_FILE)
-        print("model is loaded")
     except:
         model = None
         mlb = None
