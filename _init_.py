@@ -4,6 +4,7 @@ from User_Routes.login import login_bp
 from User_Routes.register import register_bp
 from User_Routes.view_files import view_files_bp
 from User_Routes.upload import upload_bp
+from User_Routes.delete import delete_bp
 from User_Routes.redact import redact_bp
 from User_Routes.watermark import watermark_bp
 from Admin.home import admin_bp
@@ -31,6 +32,7 @@ app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
 app.register_blueprint(view_files_bp)
 app.register_blueprint(upload_bp)
+app.register_blueprint(delete_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(redact_bp)
 app.register_blueprint(watermark_bp)

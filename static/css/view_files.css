@@ -120,6 +120,26 @@ body {
   padding-right: 0.7rem;
 }
 
+.popup-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    padding: 5px;
+    z-index: 10;
+}
+.popup-menu a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: black;
+}
+.popup-menu a:hover {
+    background: #f0f0f0;
+}
+
+
 
 @media print {
     body {

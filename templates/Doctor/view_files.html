@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Files</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/view_files.css') }}">
+    <script src="/static/js/view_files.js"></script>
 </head>
 <body>
     {% include 'Doctor/doctorBase.html' %}
@@ -29,7 +30,7 @@
 
         <div class="file-grid">
             {% for file in files %}
-            <div class="file-card" onclick="viewPDF('{{ url_for('static', filename='uploads/' + file.file_path) }}')">
+            <div class="file-card" onclick="viewPDF('{{ url_for('static', filename='Perma`/' + file.file_path) }}')">
                 <div class="file-title">{{ file.title }}</div>
 
                 <div class="file-icon">
@@ -42,21 +43,19 @@
 
                 <!-- Display the integrity status -->
                 <div class="file-integrity-status">
-                    <strong>Integrity Status: </strong>
                     {% if 'modified' in file.integrity_status|lower %}
                         <span style="color: red; font-weight: bold;">{{ file.integrity_status }}</span>
-                    {% else %}
-                        <span style="color: green; font-weight: bold;">{{ file.integrity_status }}</span>
                     {% endif %}
                 </div>
 
                 <a href="{{ url_for('share_file.share_file', file_id=file.id) }}" class="share-btn">Share</a>
 
-
                 <div class="options">
-                    <div class="dots">⋮</div>  <!-- Three horizontal dots icon -->
+                    <div class="dots" onclick="toggleMenu({{ file.id }})">⋮</div>
+                    <div id="menu-{{ file.id }}" class="menu" style="display: none;">
+                        <button class="delete-btn" onclick="deleteFile({{ file.id }})">Delete</button>
+                    </div>
                 </div>
-
             </div>
             {% endfor %}
 
@@ -65,8 +64,5 @@
             {% endif %}
         </div>
     </div>
-
-
-
 </body>
 </html>

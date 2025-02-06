@@ -30,7 +30,7 @@ def check_file_integrity(file_id):
         if not result:
             return "File not found in database."
 
-        corrected_db_path = result['File_Path'].replace("\\", "/")
+        corrected_db_path = result['File_Path'].replace("\\ ", "/")
         normalized_path = os.path.normpath(corrected_db_path)
         print(f"Checking integrity for: {normalized_path}")  # Debugging
 
@@ -42,7 +42,7 @@ def check_file_integrity(file_id):
         if new_hash == result['File_Hash']:
             return "File is intact."
         else:
-            return "File has been modified or tampered with!"
+            return "Warning, file is modified"
 
     except Exception as e:
         return f"Error checking file integrity: {e}"
