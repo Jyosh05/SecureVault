@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from Utils.general_utils import make_dir_for_temp_upload,allowed_file
 from Utils.Watermarker import watermark_pdf
 from Utils.rbac_utils import roles_required, role_redirects
+from Utils.logging_utils import log_this
 
 watermark_bp = Blueprint('watermark', __name__ , template_folder='templates')
 
@@ -28,6 +29,7 @@ def watermark_upload():
     # Check if the file is allowed and process it
     if not allowed_file(file.filename):
         flash('Unsupported file type. Please upload a valid file.', 'error')
+        log_this('User uploaded unsupported file type','critical')
         return redirect(url_for('watermark.watermark'))
 
     filename = secure_filename(file.filename)
@@ -47,4 +49,5 @@ def watermark_upload():
         return send_file(result_pdf_path, as_attachment=True, download_name=f"watermarked_{filename}")
     else:
         flash('Error applying watermark.', 'error')
+        log_this("Error applying watermark", 'critical')
         return redirect(url_for('watermark.watermark'))

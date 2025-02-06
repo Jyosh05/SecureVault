@@ -11,6 +11,8 @@ from Utils.rbac_utils import roles_required, role_redirects
 from config import MODEL_FILE, LABEL_ENCODER_FILE
 import os
 
+
+
 # Load spaCy's pre-trained NER model
 nlp = spacy.load("en_core_web_sm")
 
