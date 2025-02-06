@@ -7,6 +7,7 @@ from Utils.logging_utils import log_this
 UPLOAD_FOLDER = 'Files/Perma'
 view_files_bp = Blueprint('view_files', __name__, template_folder='templates')
 
+
 @view_files_bp.route('/view', methods=['GET'])
 @roles_required('doctor')
 def view_files():
@@ -26,7 +27,7 @@ def view_files():
 
         # Query to fetch file details
         query = """
-            SELECT ID, Title, File_Type, File_Path, Uploaded_At 
+            SELECT ID, Title, File_Type, File_Path, Uploaded_At, Deleted_At
             FROM file
             WHERE User_ID = %s
             ORDER BY Uploaded_At DESC
@@ -34,33 +35,39 @@ def view_files():
         mycursor.execute(query, (user_id,))
         files = mycursor.fetchall()
 
-        print(f"Files Retrieved from DB: {files}")  # Debugging print
-
+        # Loop through files and check if they are deleted
         file_details = []
         for file in files:
-            file_id = file['ID']
-            file_path = file['File_Path']
+            deleted_at = file.get('Deleted_At')
 
-            try:
-                integrity_status = check_file_integrity(file_id)
-            except Exception as e:
-                integrity_status = f"Error checking integrity: {e}"
+            if not deleted_at:
+                print(f"Files Retrieved from DB: {files}")  # Debugging print
 
-            print(f"File ID: {file_id}, Title: {file['Title']}, Status: {integrity_status}")  # Debugging print
+                file_id = file['ID']
+                file_path = file['File_Path']
 
-            file_details.append({
-                'id': file_id,
-                'title': file['Title'],
-                'file_type': file['File_Type'],
-                'file_path': file_path,
-                'uploaded_at': file['Uploaded_At'],
-                'integrity_status': integrity_status
-            })
+                try:
+                    integrity_status = check_file_integrity(file_id)
+                except Exception as e:
+                    integrity_status = f"Error checking integrity: {e}"
+
+                print(f"File ID: {file_id}, Title: {file['Title']}, Status: {integrity_status}")  # Debugging print
+
+                file_details.append({
+                    'id': file_id,
+                    'title': file['Title'],
+                    'file_type': file['File_Type'],
+                    'file_path': file_path,
+                    'uploaded_at': file['Uploaded_At'],
+                    'integrity_status': integrity_status
+                })
+
         log_this('User is viewing file')
         return render_template('Doctor/view_files.html', username=username, files=file_details)
 
     except Exception as e:
         print(f"Error in view_files: {e}")  # Debugging print
         flash(f"Error retrieving files: {e}", 'error')
-        return render_template('Doctor/view_files.html', files=[])
+
+    return render_template('Doctor/view_files.html', files=[])
 

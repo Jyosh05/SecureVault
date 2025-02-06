@@ -42,3 +42,7 @@ $(document).ready(function() {
         });
     }
 });
+
+document.getElementById("back-btn").addEventListener("click", function() {
+    window.location.href = "view_files.html"; // Replace with your target page URL
+});
