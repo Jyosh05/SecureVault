@@ -1444,5 +1444,105 @@
             "NRIC"
         ],
         "label":1
+    },
+    {
+        "text": "S1234567A",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "T2345678B",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "F3456789C",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "G4567890D",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "S9876543A",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "T1234567B",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "F2345678C",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "G3456789D",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "S1122334E",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "T2233445F",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "F3344556G",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "G4455667H",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "S5544332J",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "T6655443K",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "F7766554L",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "G8877665M",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "S4455667P",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "T5566778Q",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "F6677889R",
+        "pii_types": ["NRIC"],
+        "label": 1
+    },
+    {
+        "text": "G7788990S",
+        "pii_types": ["NRIC"],
+        "label": 1
     }
 ]
