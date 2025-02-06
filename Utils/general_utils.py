@@ -44,10 +44,8 @@ def check_table():
                      File_Path VARCHAR(600) NOT NULL,
                      File_Size INT NOT NULL,
                      File_Hash VARCHAR(128) NOT NULL,
-                     Co_Authors INT DEFAULT NULL,
                      Uploaded_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      Deleted_At TIMESTAMP NULL DEFAULT NULL,
-                     File_Classification ENUM('non-sensitive', 'sensitive', 'confidential') NOT NULL,
                      FOREIGN KEY (User_ID) REFERENCES user(ID) ON DELETE CASCADE,
                      INDEX (User_ID),
                      INDEX (Uploaded_At)
@@ -141,7 +139,7 @@ def check_table():
                     ID INT AUTO_INCREMENT PRIMARY KEY,
                     File_ID INT,
                     File_Path VARCHAR(255),
-                    Duration TIMESTAMP,
+                    Expiry_Date DATETIME,
                     FOREIGN KEY (File_ID) REFERENCES file(ID) ON DELETE CASCADE
                 )
             """)

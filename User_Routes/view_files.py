@@ -62,3 +62,4 @@ def view_files():
         print(f"Error in view_files: {e}")  # Debugging print
         flash(f"Error retrieving files: {e}", 'error')
         return render_template('Doctor/view_files.html', files=[])
+

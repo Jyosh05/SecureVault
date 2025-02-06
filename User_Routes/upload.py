@@ -33,7 +33,6 @@ def upload_file():
         file = request.files.get('file')
         title = request.form.get('title')
         description = request.form.get('description')
-        file_classification = request.form.get('file_classification')
 
         # Validate file input
         if not file or not allowed_file(file.filename):
@@ -67,10 +66,10 @@ def upload_file():
         try:
             mycursor = mydb.cursor()
             query = """
-                INSERT INTO file (User_ID, File_Name, File_Path, File_Size, File_Hash, File_Classification, Title, Description, File_Type)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO file (User_ID, File_Name, File_Path, File_Size, File_Hash, Title, Description, File_Type)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """
-            mycursor.execute(query, (user_id, filename, file_path, os.path.getsize(file_path), file_hash, file_classification, title, description, filename.rsplit('.', 1)[1]))
+            mycursor.execute(query, (user_id, filename, file_path, os.path.getsize(file_path), file_hash, title, description, filename.rsplit('.', 1)[1]))
             mydb.commit()
             flash("File uploaded successfully!", 'success')
         except Exception as e:
