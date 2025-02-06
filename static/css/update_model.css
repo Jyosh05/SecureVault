@@ -1,0 +1,80 @@
+/* General Styles */
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4; /* Light Gray Background */
+}
+
+/* Content Area Styles */
+.content {
+  padding: 20px;
+  margin-left: 250px; /* Adjust based on your sidebar width */
+}
+
+/* Form Container */
+.form-container {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+}
+
+/* Keyword Group */
+.keyword-group {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.keyword-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.keyword-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+.keyword-group input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button.add-keyword {
+  background-color: #4CAF50; /* Green */
+  color: #fff;
+}
+
+button.remove-keyword {
+  background-color: #f44336; /* Red */
+  color: #fff;
+}
+
+/* Submit Button */
+button[type="submit"] {
+  background-color: #007bff; /* Blue */
+  color: #fff;
+  margin-top: 20px;
+  width: 100%;
+}

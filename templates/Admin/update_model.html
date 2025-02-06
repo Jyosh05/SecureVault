@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add New Keywords</title>
+  <link rel="stylesheet" href="../../static/css/update_model.css">
+</head>
+<body>
+  {% include 'Admin/adminBase.html' %}
+
+  <div class="container">
+    <h2>Add New Keywords</h2>
+    <form method="POST" action="/update_model">
+      <div id="keyword-inputs">
+        <div class="keyword-group">
+          <label for="text">Text:</label>
+          <input type="text" id="text" name="text"><br><br>
+
+          <label for="pii_types">PII Types:</label><br>
+          <div>
+            <input type="checkbox" id="pii_type_name" name="pii_types[]" value="Name"> Name<br>
+            <input type="checkbox" id="pii_type_email" name="pii_types[]" value="Email"> Email<br>
+            <input type="checkbox" id="pii_type_phone" name="pii_types[]" value="Phone"> Phone<br>
+            <input type="checkbox" id="pii_type_address" name="pii_types[]" value="Address"> Address<br>
+            <input type="checkbox" id="pii_type_ssn" name="pii_types[]" value="Social Security Number"> Social Security Number<br>
+            <input type="checkbox" id="pii_type_dob" name="pii_types[]" value="Date of Birth"> Date of Birth<br>
+            <input type="checkbox" id="pii_type_cc" name="pii_types[]" value="Credit Card Number"> Credit Card Number<br>
+            <input type="checkbox" id="pii_type_location" name="pii_types[]" value="Location"> Location<br>
+          </div>
+
+          <label for="label">Label:</label>
+          <input type="checkbox" id="label" name="label" value="1"><br><br>
+
+          <button type="button" class="remove-keyword">Remove</button>
+        </div>
+      </div>
+
+      <button type="button" id="add-keyword">Add Keyword</button><br><br>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    const addKeywordButton = document.getElementById('add-keyword');
+    const keywordInputsContainer = document.getElementById('keyword-inputs');
+
+    addKeywordButton.addEventListener('click', () => {
+      const newKeywordGroup = document.createElement('div');
+      newKeywordGroup.classList.add('keyword-group');
+
+      newKeywordGroup.innerHTML = `
+        <label for="text">Text:</label>
+        <input type="text" id="text" name="text"><br><br>
+
+        <label for="pii_types">PII Types:</label><br>
+        <div>
+          <input type="checkbox" id="pii_type_name" name="pii_types[]" value="Name"> Name<br>
+          <input type="checkbox" id="pii_type_email" name="pii_types[]" value="Email"> Email<br>
+          <input type="checkbox" id="pii_type_phone" name="pii_types[]" value="Phone"> Phone<br>
+          <input type="checkbox" id="pii_type_address" name="pii_types[]" value="Address"> Address<br>
+          <input type="checkbox" id="pii_type_ssn" name="pii_types[]" value="Social Security Number"> Social Security Number<br>
+          <input type="checkbox" id="pii_type_dob" name="pii_types[]" value="Date of Birth"> Date of Birth<br>
+          <input type="checkbox" id="pii_type_cc" name="pii_types[]" value="Credit Card Number"> Credit Card Number<br>
+          <input type="checkbox" id="pii_type_location" name="pii_types[]" value="Location"> Location<br>
+        </div>
+
+        <label for="label">Label:</label>
+        <input type="checkbox" id="label" name="label" value="1"><br><br>
+
+        <button type="button" class="remove-keyword">Remove</button>
+      `;
+
+      keywordInputsContainer.appendChild(newKeywordGroup);
+
+      const removeButton = newKeywordGroup.querySelector('.remove-keyword');
+      removeButton.addEventListener('click', () => {
+        keywordInputsContainer.removeChild(newKeywordGroup);
+      });
+    });
+  </script>
+
+</body>
+</html>
