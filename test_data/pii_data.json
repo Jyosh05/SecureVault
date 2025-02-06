@@ -1,6 +1,6 @@
 [
     {
-        "text":"My name is John Doe and my email is john.doe@example.com.",
+        "text":"My name is John Doe and my email is john.doe1@example.com.",
         "pii_types":[
             "Name",
             "Email"
@@ -8,9 +8,1426 @@
         "label":1
     },
     {
-        "text":"i am in admiralty",
+        "text":"Please call me at 555-0102.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 123 Main Street, Anytown.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6704.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on January 1, 1990.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 4111 1111 1111 1111.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in New York City.",
         "pii_types":[
             "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Jane Smith and my email is jane.smith9@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0110.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 11 Oak Street, Somecity.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6712.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on February 2, 1985.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 5500 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Los Angeles.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Michael Brown and my email is michael.brown17@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0118.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 19 Pine Street, Oldtown.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6720.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on March 3, 1975.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 3400 0000 0000 009.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Chicago.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Emily Davis and my email is emily.davis25@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0126.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 27 Cedar Avenue, Midtown.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6728.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on April 4, 1960.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 6011 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Houston.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Robert Wilson and my email is robert.wilson33@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0134.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 35 Birch Road, Uptown.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6736.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on May 5, 1995.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 4111 1111 1111 1111.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Philadelphia.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Linda Martinez and my email is linda.martinez41@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0142.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 43 Spruce Lane, Smallville.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6744.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on June 6, 1988.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 5500 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Phoenix.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is David Anderson and my email is david.anderson49@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0150.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 51 Walnut Street, Riverdale.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6752.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on July 7, 1970.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 6011 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in San Antonio.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Barbara Thomas and my email is barbara.thomas57@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0158.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 59 Cherry Avenue, Oldcity.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6760.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on August 8, 1992.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 3400 0000 0000 009.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in San Diego.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Christopher Lee and my email is christopher.lee65@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0166.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 67 Aspen Road, Lakeside.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6768.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on September 9, 1980.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 4111 1111 1111 1111.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Dallas.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Sarah Walker and my email is sarah.walker73@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0174.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 75 Birchwood Drive, Greenfield.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6776.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on October 10, 1978.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 5500 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in San Jose.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Kevin Harris and my email is kevin.harris81@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0182.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 83 Elmwood Avenue, Centerville.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6784.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on November 11, 1965.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 6011 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Austin.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Karen Young and my email is karen.young89@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0190.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 91 River Road, Bayside.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6792.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on December 12, 2002.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 4111 1111 1111 1111.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Jacksonville.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Brian Scott and my email is brian.scott97@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0198.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 99 Summit Street, Hilltown.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6796.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on January 13, 1993.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 5500 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Fort Worth.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Donna Reed and my email is donna.reed105@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0106.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 107 Park Avenue, Oldham.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6708.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on February 14, 1982.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 6011 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Columbus.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Steven Parker and my email is steven.parker113@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0114.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 115 King Street, Downtown.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6716.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on March 17, 1977.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 4111 1111 1111 1111.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Charlotte.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Rebecca Morgan and my email is rebecca.morgan121@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0122.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 1234 Liberty Blvd, Freeport.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6724.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on April 20, 1991.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 5500 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in San Francisco.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Patrick Turner and my email is patrick.turner129@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0130.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 131 Forest Drive, Westville.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6732.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on May 22, 1983.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 6011 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Indianapolis.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Stephanie Collins and my email is stephanie.collins137@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0138.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 139 Garden Street, Easton.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6740.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on June 30, 1979.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 4111 1111 1111 1111.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in San Jose.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Gary Bennett and my email is gary.bennett145@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0146.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 147 Liberty Lane, Newburg.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6748.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on July 15, 1987.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 5500 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Austin.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Angela Murphy and my email is angela.murphy153@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0154.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 155 Ocean Drive, Seaside.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6756.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on August 19, 1994.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 6011 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Denver.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Eric Foster and my email is eric.foster161@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0162.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 163 Valley Road, Brookside.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6764.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on September 25, 1981.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 4111 1111 1111 1111.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Memphis.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Michelle Rivera and my email is michelle.rivera169@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0170.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 171 Hilltop Blvd, Ridgewood.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6772.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on October 30, 1990.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 5500 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Milwaukee.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Anthony Kelly and my email is anthony.kelly177@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0178.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 179 Park Place, Midtown.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6780.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on November 5, 1976.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 6011 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Nashville.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Sharon Brooks and my email is sharon.brooks185@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0186.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 187 Meadow Lane, Fairview.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6788.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on December 18, 1989.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 4111 1111 1111 1111.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Oklahoma City.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"My name is Rebecca Simmons and my email is rebecca.simmons193@example.com.",
+        "pii_types":[
+            "Name",
+            "Email"
+        ],
+        "label":1
+    },
+    {
+        "text":"Please call me at 555-0194.",
+        "pii_types":[
+            "Phone"
+        ],
+        "label":1
+    },
+    {
+        "text":"I live at 195 Sunset Boulevard, Riviera.",
+        "pii_types":[
+            "Address"
+        ],
+        "label":1
+    },
+    {
+        "text":"My SSN is 123-45-6796.",
+        "pii_types":[
+            "Social Security Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I was born on January 27, 1997.",
+        "pii_types":[
+            "Date of Birth"
+        ],
+        "label":1
+    },
+    {
+        "text":"My credit card number is 5500 0000 0000 0004.",
+        "pii_types":[
+            "Credit Card Number"
+        ],
+        "label":1
+    },
+    {
+        "text":"I'm currently in Las Vegas.",
+        "pii_types":[
+            "Location"
+        ],
+        "label":1
+    },
+    {
+        "text":"This sentence contains no personal info.",
+        "pii_types":[
+
+        ],
+        "label":0
+    },
+    {
+        "text":"aloysius",
+        "pii_types":[
+            "Name"
         ],
         "label":1
     }
