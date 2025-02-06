@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/view_files.css') }}">
 </head>
 <body>
-    {% include 'navbar.html' %}
+    {% include 'Doctor/doctorBase.html' %}
 
     <div class="container">
         <h1>Welcome to {{ username }}'s Vault</h1>
@@ -15,6 +15,17 @@
         <div class="upload-section">
             <a href="{{ url_for('file.upload_file') }}" class="upload-button">Upload</a>
         </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
 
         <div class="file-grid">
             {% for file in files %}
@@ -39,11 +50,13 @@
                     {% endif %}
                 </div>
 
+                <a href="{{ url_for('share_file.share_file', file_id=file.id) }}" class="share-btn">Share</a>
+
+
                 <div class="options">
                     <div class="dots">⋮</div>  <!-- Three horizontal dots icon -->
                 </div>
 
-                <a href="{{ url_for('generate_link.generate_link', file_id=file.id) }}">Generate Sharing Link</a>
             </div>
             {% endfor %}
 
@@ -52,5 +65,8 @@
             {% endif %}
         </div>
     </div>
+
+
+
 </body>
 </html>

@@ -7,6 +7,7 @@ UPLOAD_FOLDER = 'Files/Perma'
 view_files_bp = Blueprint('view_files', __name__, template_folder='templates')
 
 @view_files_bp.route('/view', methods=['GET'])
+@roles_required('doctor')
 def view_files():
     if 'user_id' not in session:
         flash("Please log in to view your files.", 'error')
@@ -55,9 +56,9 @@ def view_files():
                 'integrity_status': integrity_status
             })
 
-        return render_template('User_files/view_files.html', username=username, files=file_details)
+        return render_template('Doctor/view_files.html', username=username, files=file_details)
 
     except Exception as e:
         print(f"Error in view_files: {e}")  # Debugging print
         flash(f"Error retrieving files: {e}", 'error')
-        return render_template('User_files/view_files.html', files=[])
+        return render_template('Doctor/view_files.html', files=[])

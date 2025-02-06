@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share File</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    {% include 'Doctor/doctorBase.html' %}
+
+    <div class="container">
+        <h2>Share File</h2>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('share_file.share_file', file_id=file_id) }}" method="POST">
+            <!-- File ID (Hidden) -->
+            <input type="hidden" name="file_id" value="{{ file_id }}">
+
+            <p><strong>Sharing File:</strong> {{ file_name }}</p>
+
+            <!-- Username Input -->
+            <label for="shared_with_username">Patient Username:</label>
+            <input type="text" id="shared_with_username" name="shared_with_username" required>
+
+            <button type="submit">Share File</button>
+        </form>
+
+        <br>
+        <a href="{{ url_for('view_files.view_files') }}">Back to Files</a>
+    </div>
+
+</body>
+</html>

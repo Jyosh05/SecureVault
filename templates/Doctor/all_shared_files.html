@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files Shared with You</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shared_files.css') }}">
+</head>
+<body>
+    {% include 'Doctor/doctorBase.html' %}
+
+    <div class="container">
+        <h1>Files Shared with You</h1>
+
+        <div class="file-list">
+            {% for file in share_files %}
+            <div class="file-card">
+                <div class="file-thumbnail">
+                    <img src="{{ url_for('static', filename='previews/pdf.png') }}">
+
+                </div>
+
+                <div class="file-title">{{ file.Title }}</div>
+                <div class="file-shared-by">Shared by: {{ file.Shared_By }}</div>
+                <div class="file-date">Date Shared: {{ file.Date_Shared }}</div>
+                <a href="{{ url_for('view_pdf.view_each_pdf', share_id=file.Share_ID) }}" class="open-btn">Open</a>
+
+
+
+
+            </div>
+            {% endfor %}
+
+            {% if not share_files %}
+            <p>No files have been shared with you.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
