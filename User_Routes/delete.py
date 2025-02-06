@@ -23,7 +23,7 @@ def recycle_bin():
         return jsonify({"error": f"Failed to fetch recycle bin files: {str(e)}"}), 500
 
 
-@delete_bp.route('/soft_delete/<int:file_id>', methods=['POST'])
+@delete_bp.route('/soft_delete/<int:file_id>', methods=['POST', 'GET'])
 def soft_delete(file_id):
     try:
         mycursor = mydb.cursor(dictionary=True)
