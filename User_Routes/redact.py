@@ -10,7 +10,7 @@ from Utils.PDF_Redaction import redact_pdf
 from Utils.rbac_utils import roles_required, role_redirects
 from config import MODEL_FILE, LABEL_ENCODER_FILE
 import os
-
+from Utils.logging_utils import log_this
 
 
 # Load spaCy's pre-trained NER model
@@ -92,19 +92,23 @@ def redact_upload():
         print("AI model and label encoder loaded successfully.")
     except FileNotFoundError:
         flash("AI model not found. Please train the model first.", "error")
+        log_this('User did not train the AI model', 'high')
         return redirect(url_for('ai.update_model'))
 
     if 'file' not in request.files:
         flash('No file part', 'error')
+        log_this('error redacting file', 'critical')
         return redirect(url_for('redact.redact'))
 
     file = request.files['file']
     if file.filename == '':
         flash('No file selected', 'error')
+        log_this('error redacting file', 'critical')
         return redirect(url_for('redact.redact'))
 
     if not allowed_file(file.filename):
         flash('Unsupported file type. Please upload a valid file.', 'error')
+        log_this("user uploaded an unsupported file type", 'high')
         return redirect(url_for('redact.redact'))
 
     filename = secure_filename(file.filename)
@@ -183,13 +187,16 @@ def redact_upload():
         if found_pii:
             doc.save(redacted_pdf_path)
             doc.close()
+            log_this('redaction completed successfully')
             print("Redaction completed using AI and saved to:", redacted_pdf_path)
         else:
             doc.close()
             print("No PII detected by AI in any page. Falling back to PDF redactor function.")
+            log_this('error redacting file', 'high')
             redact_pdf(temp_file_path, redacted_pdf_path)
     else:
         print("Model or label encoder not available, using fallback redaction.")
+        log_this('model or label encoder not available for user to do file redaction', 'high')
         redact_pdf(temp_file_path, redacted_pdf_path)
 
     return send_file(redacted_pdf_path, as_attachment=True, download_name=f"redacted_{filename}")
