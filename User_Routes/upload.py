@@ -56,7 +56,9 @@ def upload_file():
         # Save file only if it is clean
         filename = secure_filename(file.filename)
         file_path = os.path.join(user_folder, filename)
+        file.seek(0)
         file.save(file_path)
+        print(f"thix is the file path {file_path}")
 
         # Generate hash for integrity tracking
         file_hash = generate_file_hash(file_path)
