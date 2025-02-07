@@ -15,7 +15,7 @@ def watermark():
 
 
 @watermark_bp.route('/watermark_upload', methods=['POST'])
-@roles_required('user')
+@roles_required('patient', 'doctor')
 def watermark_upload():
     if 'file' not in request.files:
         flash('No file part', 'error')
