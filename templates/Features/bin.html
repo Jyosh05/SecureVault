@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycle Bin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/bin.js"></script>
+
+
+    <style>
+        .file-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .file-card .file-title {
+            font-weight: bold;
+        }
+        .file-card .file-path {
+            color: #555;
+        }
+        .file-card .expiry-date {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+{% include 'Doctor/doctorBase.html' %}
+    <div class="container my-5">
+        <h1 class="mb-4">Recycle Bin</h1>
+
+        {% if soft_deleted_files %}
+        <div class="list-group">
+            {% for file in soft_deleted_files %}
+            <div class="file-card" onclick="viewPDF('{{ url_for('static', filename='Perma/' + file.File_Path) }}')">
+                <div class="file-title">{{ file.Title }}</div>
+
+                <div class="file-icon">
+                    <img src="{{ url_for('static', filename='previews/pdf.png') }}">
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <!-- Restore File Button -->
+                    <form action="{{ url_for('delete.restore_file', file_id=file.File_ID) }}" method="post" class="me-2">
+                        <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                    </form>
+                    <!-- Hard Delete File Button -->
+                    <form action="{{ url_for('delete.hard_delete', file_id=file.File_ID) }}" method="post" class="delete-form">
+                        <button type="submit" class="btn btn-danger btn-sm delete-btn">Delete Permanently</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No files in the recycle bin.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+

@@ -2,6 +2,7 @@ from Utils.rbac_utils import roles_required
 from Utils.general_utils import *
 from flask import Blueprint, request, render_template, redirect, url_for, flash, session, jsonify
 import requests
+from Utils.rbac_utils import *
 import os
 from datetime import datetime, timedelta
 
@@ -9,12 +10,17 @@ from datetime import datetime, timedelta
 delete_bp = Blueprint('delete', __name__, template_folder='templates')
 
 @delete_bp.route('/recycle_bin', methods=['GET'])
+@roles_required('doctor')
 def recycle_bin():
     try:
         mycursor = mydb.cursor(dictionary=True)
 
-        # Fetch soft-deleted files
-        mycursor.execute("SELECT * FROM soft_deletion")
+        # Fetch soft-deleted files with title from the 'file' table
+        mycursor.execute("""
+            SELECT sd.File_ID, sd.File_Path, f.Title
+            FROM soft_deletion sd
+            JOIN file f ON sd.File_ID = f.ID
+        """)
         soft_deleted_files = mycursor.fetchall()
 
         return render_template('Features/bin.html', soft_deleted_files=soft_deleted_files)
@@ -35,61 +41,59 @@ def soft_delete(file_id):
         if not file:
             return jsonify({"error": "File not found"}), 404
 
-        # Define the file's new path in the recycle bin folder
-        recycle_bin_path = f"Files/RecycleBin/{os.path.basename(file['File_Path'])}"
-
-        # Move the file to the recycle bin folder
-        if os.path.exists(f"Files/Perma/{file['File_Path']}"):
-            os.rename(f"Files/Perma/{file['File_Path']}", recycle_bin_path)
-
         # Move file to soft deletion table (keeping a record for recovery purposes)
         expiry_date = datetime.now() + timedelta(days=30)
         mycursor.execute(
             "INSERT INTO soft_deletion (File_ID, File_Path, Expiry_Date) VALUES (%s, %s, %s)",
-            (file["ID"], recycle_bin_path, expiry_date)
+            (file["ID"], file["File_Path"], expiry_date)  # Keep original path
         )
 
         # Flag the file as soft deleted
         mycursor.execute("UPDATE file SET Deleted_At = NOW() WHERE ID = %s", (file_id,))
 
         mydb.commit()
-        return jsonify({"message": "File moved to soft deletion."})
+        flash("File moved to recycle bin.", 'success')  # Flash message on success
+        return redirect(url_for('view_files.view_files'))
 
     except Exception as e:
         mydb.rollback()
-        return jsonify({"error": f"Failed to soft delete file: {str(e)}"}), 500
+        flash(f"Failed to soft delete file: {str(e)}", 'error')  # Flash message on failure
+        return redirect(url_for('view_files.view_files'))
 
 
 @delete_bp.route('/restore/<int:file_id>', methods=['POST'])
 def restore_file(file_id):
     try:
+        # Fetch the file details from the 'file' table
         mycursor = mydb.cursor(dictionary=True)
-
-        # Check if the file exists in soft deletion
-        mycursor.execute("SELECT File_ID, File_Path FROM soft_deletion WHERE File_ID = %s", (file_id,))
+        mycursor.execute("""SELECT * FROM file WHERE ID = %s""", (file_id,))
         file = mycursor.fetchone()
 
         if not file:
-            return jsonify({"error": "File not found in soft deletion"}), 404
+            raise ValueError("File not found")
 
-        # Restore file to the main table
-        mycursor.execute(
-            "INSERT INTO file (ID, File_Path) VALUES (%s, %s)",
-            (file["File_ID"], file["File_Path"])
-        )
+        # Step 1: Delete the file entry from the 'soft_deletion' table
+        mycursor.execute("""
+            DELETE FROM soft_deletion WHERE File_ID = %s
+        """, (file_id,))
 
-        # Remove from soft deletion table
-        mycursor.execute("DELETE FROM soft_deletion WHERE File_ID = %s", (file_id,))
+        # Step 2: Set the 'Deleted_At' field in the 'file' table to NULL (restore the file)
+        mycursor.execute("""
+            UPDATE file
+            SET Deleted_At = NULL
+            WHERE ID = %s
+        """, (file_id,))
 
-        # Reset Deleted_At in the main table
-        mycursor.execute("UPDATE file SET Deleted_At = NULL WHERE ID = %s", (file["File_ID"],))
-
+        # Commit the transaction to make changes permanent
         mydb.commit()
-        return jsonify({"message": "File restored successfully."})
 
+        flash("File restored successfully", 'success')
     except Exception as e:
-        mydb.rollback()
-        return jsonify({"error": f"Failed to restore file: {str(e)}"}), 500
+        mydb.rollback()  # Ensure no partial changes if error occurs
+        flash(f"Error: {str(e)}", 'error')
+
+    return redirect(url_for('view_files.view_files'))
+
 
 
 @delete_bp.route('/hard_delete/<int:file_id>', methods=['POST'])
@@ -104,20 +108,22 @@ def hard_delete(file_id):
         if not file:
             return jsonify({"error": "File not found in soft deletion"}), 404
 
-        # Delete the file from the file system
-        file_path = file['File_Path']
+        file_path = file["File_Path"]
         if os.path.exists(file_path):
             os.remove(file_path)
 
-        # Delete the file from the database
         mycursor.execute("DELETE FROM soft_deletion WHERE File_ID = %s", (file_id,))
+        mycursor.execute("DELETE FROM file WHERE ID = %s", (file_id,))
 
         mydb.commit()
-        return jsonify({"message": "File permanently deleted."})
+
+        flash("File Permanently Deleted.", 'success')  # Flash message on success
+        return redirect(url_for('delete.recycle_bin'))
 
     except Exception as e:
         mydb.rollback()
-        return jsonify({"error": f"Failed to permanently delete file: {str(e)}"}), 500
+        flash(f"Failed to delete: {str(e)}", 'error')
+        return redirect(url_for('delete.recycle_bin'))
 
 
 
