@@ -52,7 +52,7 @@ from flask import send_file
 @view_pdf_bp.route('/serve-file/<int:file_id>', methods=['GET'])
 @roles_required('doctor', 'patient')
 def serve_file(file_id):
-    mycursor = mydb.cursor(dictionary=True)
+    mycursor = mydb.cursor(dictionary=True, buffered=True)
 
     # Retrieve the converted file path from the 'file_sharing' table using file_id
     mycursor.execute("""
