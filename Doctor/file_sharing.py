@@ -8,7 +8,7 @@ share_file_bp = Blueprint('share_file', __name__, template_folder='templates')
 
 
 @share_file_bp.route('/share/<int:file_id>', methods=['GET', 'POST'])
-@roles_required('patient', 'doctor')
+@roles_required('doctor')
 def share_file(file_id):
     if 'user_id' not in session:
         flash('Unauthorized access.', 'error')
@@ -35,7 +35,7 @@ def share_file(file_id):
             return redirect(url_for('share_file.share_file', file_id=file_id))
 
         # Get recipient user ID
-        mycursor.execute("SELECT ID FROM user WHERE Username = %s", (shared_with_username,))
+        mycursor.execute("SELECT ID, Role FROM user WHERE Username = %s", (shared_with_username,))
         user_record = mycursor.fetchone()
 
         if not user_record:
@@ -43,25 +43,34 @@ def share_file(file_id):
             return redirect(url_for('share_file.share_file', file_id=file_id))
 
         shared_with_user_id = user_record['ID']
+        role = user_record['Role']
 
-        # Convert PDF at the time of sharing
-        upload_folder = temp_file_sharing_upload()
-        converted_file_path = convert_pdf_to_image_pdf(original_file_path, upload_folder)
+        if role == 'patient':
 
-        # Insert into file_sharing table
-        mycursor.execute("""
-            INSERT INTO file_sharing (File_ID, Converted_File_Path, Shared_By_User_ID, Shared_With_User_ID)
-            VALUES (%s, %s, %s, %s)
-        """, (file_id, converted_file_path, session['user_id'], shared_with_user_id))
-        mydb.commit()
+            # Convert PDF at the time of sharing
+            upload_folder = temp_file_sharing_upload()
+            converted_file_path = convert_pdf_to_image_pdf(original_file_path, upload_folder)
 
-        flash('File shared successfully!', 'success')
-        return redirect(url_for('view_files.view_files'))
+            # Insert into file_sharing table
+            mycursor.execute("""
+                INSERT INTO file_sharing (File_ID, Converted_File_Path, Shared_By_User_ID, Shared_With_User_ID)
+                VALUES (%s, %s, %s, %s)
+            """, (file_id, converted_file_path, session['user_id'], shared_with_user_id))
+            mydb.commit()
+
+            flash('File shared successfully!', 'success')
+            return redirect(url_for('view_files.view_files'))
+
+        elif role == 'doctor':
+            flash("Files can only be permanently shared with patients only. To share with doctors, please use temporary sharing")
+
+        else:
+            flash("User does not exist. Try another username or try again later.")
 
     return render_template('Doctor/share_file.html', file_id=file_id, file_name=file_name)
 
 @share_file_bp.route('/view_shared_files', methods=['GET'])
-@roles_required('patient', 'doctor')
+@roles_required('patient')
 def view_shared_files():
     if 'user_id' not in session:
         return jsonify({'error': 'Unauthorized'}), 401
@@ -71,24 +80,14 @@ def view_shared_files():
 
     mycursor = mydb.cursor(dictionary=True)
 
-    if user_role == 'doctor':
+    if user_role == 'patient':
         mycursor.execute("""
-            SELECT f.ID, fs.Share_ID, f.Title, fs.Converted_File_Path, fs.Date_Shared, u.Username AS Shared_By 
+            SELECT fs.Share_ID, f.Title, f.Deleted_At, fs.Converted_File_Path, fs.Date_Shared, u.Username AS Shared_By, fs.Has_Downloaded 
             FROM file_sharing fs
             JOIN file f ON fs.File_ID = f.ID
             JOIN user u ON fs.Shared_By_User_ID = u.ID
             WHERE fs.Shared_With_User_ID = %s
-        """, (user_id,))
-        files = mycursor.fetchall()
-        return render_template('Doctor/all_shared_files.html', share_files=files)
-
-    elif user_role == 'patient':
-        mycursor.execute("""
-            SELECT fs.Share_ID, f.Title, fs.Converted_File_Path, fs.Date_Shared, u.Username AS Shared_By, fs.Has_Downloaded 
-            FROM file_sharing fs
-            JOIN file f ON fs.File_ID = f.ID
-            JOIN user u ON fs.Shared_By_User_ID = u.ID
-            WHERE fs.Shared_With_User_ID = %s
+            AND f.Deleted_At IS NULL
         """, (user_id,))
         files = mycursor.fetchall()
         return render_template('User_files/all_shared_files.html', share_files=files)

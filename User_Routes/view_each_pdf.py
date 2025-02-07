@@ -8,7 +8,7 @@ view_pdf_bp = Blueprint('view_pdf', __name__, template_folder='templates')
 
 
 @view_pdf_bp.route('/shared-file/<int:share_id>', methods=['GET', 'POST'])
-@roles_required('doctor', 'patient')
+@roles_required('patient')
 def view_each_pdf(share_id):
     if 'user_id' not in session:
         return jsonify({'error': 'Unauthorized'}), 401
@@ -50,7 +50,7 @@ def view_each_pdf(share_id):
 from flask import send_file
 
 @view_pdf_bp.route('/serve-file/<int:file_id>', methods=['GET'])
-@roles_required('doctor', 'patient')
+@roles_required('patient')
 def serve_file(file_id):
     mycursor = mydb.cursor(dictionary=True, buffered=True)
 
