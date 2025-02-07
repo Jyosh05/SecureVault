@@ -12,7 +12,6 @@ def redact_pdf(input_pdf_path, output_pdf_path):
         "name": r"\b[A-Z][a-z]* [A-Z][a-z]*\b",
         "location": r"\b[A-Z][a-z]*, [A-Z][a-z]*\b",
         "gmail": r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"
-
     }
 
     # Open the input PDF
@@ -20,15 +19,13 @@ def redact_pdf(input_pdf_path, output_pdf_path):
 
     # Iterate through each page
     for page_num in range(doc.page_count):
-        page = doc.load_page(page_num)# Load a page
+        page = doc.load_page(page_num)
         print(page)
 
-        # Extract the text and find positions of matches
         page_text = page.get_text("text")
         print(page_text)
 
         for label, pattern in patterns.items():
-            # Use regex to find all occurrences of the sensitive data
             matches = re.finditer(pattern, page_text)
 
             for match in matches:
@@ -48,44 +45,53 @@ def redact_pdf(input_pdf_path, output_pdf_path):
 
 nlp = spacy.load("en_core_web_lg")
 
+
 def redact_names_from_pdf(input_pdf, output_pdf):
     doc = fitz.open(input_pdf)
     print('Using name redactor')
 
-    for page in doc:
-        text = page.get_text("text").replace("\n", " ")
+    for page_num in range(doc.page_count):
+        page = doc.load_page(page_num)
+        text = page.get_text("text")
         spacy_doc = nlp(text)
-        words = page.get_text("words")  # Get words and their bounding boxes
+        print(text)
 
         for ent in spacy_doc.ents:
             if ent.label_ == "PERSON":
-                entity_text = ent.text.lower()  # Normalize for comparison
+                name_text = ent.text
+                print(name_text)
 
-                rects_to_redact = []
-                for word_info in words:
-                    word_text = word_info[4].lower()  # Word text
-                    word_rect = fitz.Rect(word_info[:4])  # Word rectangle
+                regex_pattern = r"\b" + re.escape(name_text) + r"\b"  # Word boundaries
+                matches = re.finditer(regex_pattern, text, re.IGNORECASE)
 
-                    # Check if the word is part of the entity (more robust matching)
-                    if word_text in entity_text or any(part in word_text for part in entity_text.split()):
-                        rects_to_redact.append(word_rect)
+                for match in matches:
+                    rects_to_redact = []
+                    words = page.get_text("words")
 
-                if rects_to_redact:
-                    combined_rect = rects_to_redact[0]
-                    for rect in rects_to_redact[1:]:
-                        combined_rect |= rect  # Combine rectangles
+                    for word_info in words:  # Iterate through word *information*
+                        word_text = word_info[4]  # The actual word text
+                        if name_text.lower() in word_text.lower(): # Case-insensitive comparison
+                            rect = fitz.Rect(word_info[:4])  # Coordinates
+                            rects_to_redact.append(rect)
 
-                    # Add padding (important!)
-                    padding_x = combined_rect.width * 0.1
-                    padding_y = combined_rect.height * 0.1
-                    combined_rect = combined_rect + (-padding_x, -padding_y, padding_x, padding_y)
+                    if rects_to_redact:
+                        combined_rect = rects_to_redact[0]
+                        for rect in rects_to_redact[1:]:
+                            combined_rect |= rect  # Union of rectangles
 
-                    page.draw_rect(combined_rect, color=(0, 0, 0), fill=(0, 0, 0))
+                        # Padding (improved)
+                        padding_x = combined_rect.width * 0.1
+                        padding_y = combined_rect.height * 0.1
+                        combined_rect.x0 -= padding_x
+                        combined_rect.y0 -= padding_y
+                        combined_rect.x1 += padding_x
+                        combined_rect.y1 += padding_y
+
+                        page.draw_rect(combined_rect, color=(0, 0, 0), fill=(0, 0, 0))
 
     doc.save(output_pdf)
     doc.close()
     print("Finished redacting names.")
-
 
 
 
