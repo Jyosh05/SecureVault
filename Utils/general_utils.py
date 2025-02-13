@@ -46,6 +46,7 @@ def check_table():
                      File_Hash VARCHAR(128) NOT NULL,
                      Uploaded_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                      Deleted_At TIMESTAMP NULL DEFAULT NULL,
+                     File_Modified BOOLEAN NOT NULL DEFAULT FALSE,
                      FOREIGN KEY (User_ID) REFERENCES user(ID) ON DELETE CASCADE,
                      INDEX (User_ID),
                      INDEX (Uploaded_At)
@@ -160,7 +161,7 @@ def make_dir_for_temp_upload():
     return upload_folder
 
 
-ALLOWED_EXTENSIONS = {'pdf'}
+ALLOWED_EXTENSIONS = {'pdf','txt', 'zip'}
 
 # Maximum file size in bytes (5 MB)
 MAX_FILE_SIZE = 5 * 1024 * 1024

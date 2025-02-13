@@ -12,7 +12,7 @@ DB_Config = {
 
 so_config = {
     'username': 'JohnAdmin',
-    'password': 'security_officer1234',
+    'password': '123',
     'email': 'jyoshwlitha@gmail.com',
     'role': 'so'
 }

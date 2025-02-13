@@ -24,7 +24,7 @@ def generate_file_hash(filepath, algorithm='sha256'):
 def check_file_integrity(file_id):
     try:
         cursor = mydb.cursor(dictionary=True)
-        cursor.execute("SELECT File_Path, File_Hash FROM file WHERE ID = %s", (file_id,))
+        cursor.execute("SELECT File_Path, File_Hash, File_Modified FROM file WHERE ID = %s", (file_id,))
         result = cursor.fetchone()
 
         if not result:
@@ -40,9 +40,16 @@ def check_file_integrity(file_id):
         new_hash = generate_file_hash(normalized_path)
 
         if new_hash == result['File_Hash']:
+            # File is intact, reset File_Modified to False if it was previously True
+            if result['File_Modified']:
+                cursor.execute("UPDATE file SET File_Modified = FALSE WHERE ID = %s", (file_id,))
+                mydb.commit()
             return "File is intact."
         else:
-            return "Warning, file is modified"
+            # File has been modified, set File_Modified to True
+            cursor.execute("UPDATE file SET File_Modified = TRUE WHERE ID = %s", (file_id,))
+            mydb.commit()
+            return "Warning, file is modified."
 
     except Exception as e:
         return f"Error checking file integrity: {e}"
