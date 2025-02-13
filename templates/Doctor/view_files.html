@@ -48,7 +48,11 @@
                     {% endif %}
                 </div>
 
-                <a href="{{ url_for('share_file.share_file', file_id=file.id) }}" class="share-btn">Share</a>
+
+                {% if not 'modified' in file.integrity_status|lower %}
+
+                    <a href="{{ url_for('share_file.share_file', file_id=file.id) }}" class="share-btn">Share</a>
+                {% endif %}
 
                 <div class="options">
                     <div class="dots" onclick="toggleMenu({{ file.id }})">⋮</div>

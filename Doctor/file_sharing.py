@@ -82,12 +82,13 @@ def view_shared_files():
 
     if user_role == 'patient':
         mycursor.execute("""
-            SELECT fs.Share_ID, f.Title, f.Deleted_At, fs.Converted_File_Path, fs.Date_Shared, u.Username AS Shared_By, fs.Has_Downloaded 
+            SELECT fs.Share_ID, f.Title, f.Deleted_At, fs.Converted_File_Path, fs.Date_Shared, u.Username AS Shared_By, fs.Has_Downloaded
             FROM file_sharing fs
             JOIN file f ON fs.File_ID = f.ID
             JOIN user u ON fs.Shared_By_User_ID = u.ID
             WHERE fs.Shared_With_User_ID = %s
             AND f.Deleted_At IS NULL
+            AND f.File_Modified IS FALSE
         """, (user_id,))
         files = mycursor.fetchall()
         return render_template('User_files/all_shared_files.html', share_files=files)
