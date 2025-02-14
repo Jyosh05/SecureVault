@@ -25,6 +25,13 @@
         .file-card .expiry-date {
             color: red;
         }
+        .bin_icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px; /* Adjust the height to fit your design */
+            margin-top: 300px; /* Optional for spacing from the top */
+        }
     </style>
 </head>
 <body>
@@ -56,7 +63,9 @@
             {% endfor %}
         </div>
         {% else %}
-        <p>No files in the recycle bin.</p>
+        <div class="bin_icon">
+            <img src="{{ url_for('static', filename='previews/bin.png') }}">
+        </div>
         {% endif %}
     </div>
 </body>

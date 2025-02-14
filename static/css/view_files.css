@@ -51,20 +51,6 @@ body {
   background-color: #54BAFF;
 }
 
-.search-bar {
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-}
-
-.search-bar input {
-  padding: 0.5rem;
-  flex: 1;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
 /* Grid container for file cards */
 .file-grid {
   display: grid;

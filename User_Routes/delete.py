@@ -1,3 +1,5 @@
+from sympy.physics.units import minutes
+
 from Utils.rbac_utils import roles_required
 from Utils.general_utils import *
 from flask import Blueprint, request, render_template, redirect, url_for, flash, session, jsonify
@@ -5,6 +7,8 @@ import requests
 from Utils.rbac_utils import *
 import os
 from datetime import datetime, timedelta
+from apscheduler.schedulers.background import BackgroundScheduler
+import atexit
 
 
 delete_bp = Blueprint('delete', __name__, template_folder='templates')
@@ -42,7 +46,7 @@ def soft_delete(file_id):
             return jsonify({"error": "File not found"}), 404
 
         # Move file to soft deletion table (keeping a record for recovery purposes)
-        expiry_date = datetime.now() + timedelta(days=30)
+        expiry_date = datetime.now() + timedelta(minutes=3)
         mycursor.execute(
             "INSERT INTO soft_deletion (File_ID, File_Path, Expiry_Date) VALUES (%s, %s, %s)",
             (file["ID"], file["File_Path"], expiry_date)  # Keep original path
@@ -125,5 +129,41 @@ def hard_delete(file_id):
         flash(f"Failed to delete: {str(e)}", 'error')
         return redirect(url_for('delete.recycle_bin'))
 
+
+def auto_delete_expired_files():
+    try:
+        mycursor = mydb.cursor(dictionary=True)
+
+        # Find expired files
+        mycursor.execute("SELECT File_ID, File_Path, Expiry_Date FROM soft_deletion WHERE Expiry_Date <= NOW()")
+        expired_files = mycursor.fetchall()
+
+        if not expired_files:
+            print("No expired files found.")  # Debugging output
+            return
+
+        for file in expired_files:
+            file_id = file["File_ID"]
+            file_path = file["File_Path"]
+
+            # Delete the actual file
+            if os.path.exists(file_path):
+                os.remove(file_path)
+                print(f"Deleted file: {file_path}")
+
+            # Remove file from database
+            mycursor.execute("DELETE FROM soft_deletion WHERE File_ID = %s", (file_id,))
+            mycursor.execute("DELETE FROM file WHERE ID = %s", (file_id,))
+            print(f"Removed file ID {file_id} from database.")
+
+        mydb.commit()
+
+    except Exception as e:
+        print(f"Error in auto-deletion: {str(e)}")
+
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(auto_delete_expired_files, 'interval', minutes=1)
+scheduler.start()
 
 

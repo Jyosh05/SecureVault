@@ -1,21 +1,14 @@
-from Utils.general_utils import make_dir_for_temp_upload, allowed_file, is_file_size_valid
-from Utils.rbac_utils import roles_required
-from Utils.general_utils import *
-from flask import Blueprint, request, render_template, redirect, url_for, flash, session, jsonify
-from werkzeug.utils import secure_filename
 from Utils.file_integrity import *
-import requests
-import os
 from config import VIRUSTOTAL_API_KEY
 from Utils.logging_utils import log_this
-import time
+import time, os, shutil, requests, io
 
 
 # File Upload Blueprint
 upload_bp = Blueprint('file', __name__, template_folder='templates')
 
+
 UPLOAD_FOLDER = 'Files/Perma'
-BASE_UPLOAD_FOLDER = "Files/Perma"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
@@ -32,7 +25,6 @@ def upload_file():
         title = request.form.get('title')
         description = request.form.get('description')
 
-        # Validate file input
         if not file or not allowed_file(file.filename):
             flash("Invalid file type or no file uploaded.", 'error')
             log_this('Invalid file type or no file uploaded', 'high')
@@ -43,34 +35,34 @@ def upload_file():
             log_this('User exceeds file size limit', 'critical')
             return redirect(request.url)
 
-        # SCAN FILE FIRST BEFORE SAVING
-        scan_result = scan_file_virustotal(file)
+        file_in_memory = io.BytesIO(file.read())
+
+        scan_result = scan_file_virustotal(file_in_memory)
         if "error" in scan_result:
             flash(f"File rejected: {scan_result['error']}", 'error')
+            # Reset memory stream for cleanup
+            file_in_memory.close()
             return redirect(request.url)
 
-        # Create user-specific folder if it doesn't exist
-        user_folder = os.path.join(BASE_UPLOAD_FOLDER, str(user_id))
+        user_folder = os.path.join(UPLOAD_FOLDER, str(user_id))
         os.makedirs(user_folder, exist_ok=True)
 
-        # Save file only if it is clean
         filename = secure_filename(file.filename)
-        file_path = os.path.join(user_folder, filename)
-        file.seek(0)
-        file.save(file_path)
-        print(f"thix is the file path {file_path}")
+        permanent_file_path = os.path.join(user_folder, filename)
 
-        # Generate hash for integrity tracking
-        file_hash = generate_file_hash(file_path)
+        with open(permanent_file_path, 'wb') as f:
+            f.write(file_in_memory.getvalue())
 
-        # Store file metadata in database
+        file_in_memory.close()
+        file_hash = generate_file_hash(permanent_file_path)
+
         try:
             mycursor = mydb.cursor()
             query = """
                 INSERT INTO file (User_ID, File_Name, File_Path, File_Size, File_Hash, Title, Description, File_Type)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             """
-            mycursor.execute(query, (user_id, filename, file_path, os.path.getsize(file_path), file_hash, title, description, filename.rsplit('.', 1)[1]))
+            mycursor.execute(query, (user_id, filename, permanent_file_path, os.path.getsize(permanent_file_path), file_hash, title, description, filename.rsplit('.', 1)[1]))
             mydb.commit()
             flash("File uploaded successfully!", 'success')
         except Exception as e:
@@ -81,14 +73,14 @@ def upload_file():
     return render_template('Features/upload.html')
 
 
-def scan_file_virustotal(file):
-    """Scan a file using VirusTotal API and ensure results before allowing upload."""
-
+def scan_file_virustotal(file_in_memory):
+    """Scan a file in memory using VirusTotal API and ensure results before allowing upload."""
     url = "https://www.virustotal.com/api/v3/files"
     headers = {"x-apikey": VIRUSTOTAL_API_KEY}
 
     try:
-        files = {"file": file}
+        # Instead of file_path, use in-memory bytesIO file
+        files = {"file": file_in_memory}
         response = requests.post(url, headers=headers, files=files)
 
         if response.status_code == 200:
