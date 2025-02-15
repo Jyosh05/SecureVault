@@ -46,23 +46,30 @@ def share_file(file_id):
         role = user_record['Role']
 
         if role == 'patient':
+            mycursor.execute("SELECT Share_ID FROM file_sharing WHERE File_ID = %s AND Shared_With_User_ID = %s", (file_id, shared_with_user_id,))
+            check_shared_files = mycursor.fetchall()
+            if check_shared_files:
+                 flash("This file has already been shared with patient")
+            else:
+                # Convert PDF at the time of sharing
+                upload_folder = temp_file_sharing_upload()
+                converted_file_path = convert_pdf_to_image_pdf(original_file_path, upload_folder)
 
-            # Convert PDF at the time of sharing
-            upload_folder = temp_file_sharing_upload()
-            converted_file_path = convert_pdf_to_image_pdf(original_file_path, upload_folder)
+                # Insert into file_sharing table
+                mycursor.execute("""
+                    INSERT INTO file_sharing (File_ID, Converted_File_Path, Shared_By_User_ID, Shared_With_User_ID)
+                    VALUES (%s, %s, %s, %s)
+                """, (file_id, converted_file_path, session['user_id'], shared_with_user_id))
+                mydb.commit()
 
-            # Insert into file_sharing table
-            mycursor.execute("""
-                INSERT INTO file_sharing (File_ID, Converted_File_Path, Shared_By_User_ID, Shared_With_User_ID)
-                VALUES (%s, %s, %s, %s)
-            """, (file_id, converted_file_path, session['user_id'], shared_with_user_id))
-            mydb.commit()
-
-            flash('File shared successfully!', 'success')
-            return redirect(url_for('view_files.view_files'))
+                flash('File shared successfully!', 'success')
+                return redirect(url_for('view_files.view_files'))
 
         elif role == 'doctor':
-            flash("Files can only be permanently shared with patients only. To share with doctors, please use temporary sharing")
+            if shared_with_user_id == session['user_id']:
+                flash("File cannot be shared with yourself")
+            else:
+                flash("Files can only be permanently shared with patients only. To share with doctors, please use temporary sharing")
 
         else:
             flash("User does not exist. Try another username or try again later.")
@@ -139,3 +146,50 @@ def download_file(share_id):
             return jsonify({"error": "You have already downloaded this file."}), 400
     else:
         return jsonify({"error": "Unauthorized or invalid share ID."}), 403
+
+@share_file_bp.route('/view_perma_share', methods=['GET', 'POST'])
+@roles_required('doctor')
+def view_perma_share():
+    if 'user_id' not in session:
+        flash('Unauthorized access.', 'error')
+        return redirect(url_for('login.login'))  # Redirect to login page if not logged in
+
+    user_id = session['user_id']
+
+
+    mycursor = mydb.cursor(dictionary=True)
+
+    # Retrieve the sharing record based on Share_ID
+    mycursor.execute("""
+                SELECT f.Title, fs.Share_ID, fs.File_ID, fs.Date_Shared, u.Username AS Shared_With
+                FROM file_sharing fs
+                JOIN file f ON fs.File_ID = f.ID
+                JOIN user u ON fs.Shared_With_User_ID = u.ID
+                WHERE fs.Shared_By_User_ID = %s
+            """, (user_id,))
+    all_shared_files = mycursor.fetchall()
+
+    return render_template("Doctor/perma_shared_view.html", shared_files = all_shared_files)
+
+
+@share_file_bp.route('/revoke_perma_sharing/<int:share_id>', methods=['GET', 'POST'])
+@roles_required('doctor')
+def revoke_perma_sharing(share_id):
+    if 'user_id' not in session:
+        flash('Unauthorized access.', 'error')
+        return redirect(url_for('login.login'))  # Redirect to login page if not logged in
+
+    mycursor = mydb.cursor(dictionary=True)
+
+    # Retrieve the sharing record based on Share_ID
+    mycursor.execute("SELECT * FROM file_sharing WHERE Share_ID = %s", (share_id,))
+    delete_share = mycursor.fetchone()
+
+    if not delete_share:
+        return jsonify({"error": "Sharing not found"}), 404
+
+    mycursor.execute("DELETE FROM file_sharing WHERE Share_ID = %s", (share_id,))
+    mydb.commit()
+
+    flash("File shared Permanently Deleted.", 'success')  # Flash message on success
+    return redirect(url_for('share_file.view_perma_share'))
