@@ -38,7 +38,7 @@ def watermark_upload():
     temp_file_path = os.path.join(temp_upload_folder, filename)
     file.save(temp_file_path)
 
-    watermark_text = session.get('username')  # Dynamic watermark
+    watermark_text = session.get('username')
     watermarked_pdf_path = os.path.join(temp_upload_folder, f"watermarked_{filename}")
 
     # Apply watermark

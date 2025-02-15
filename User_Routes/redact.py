@@ -6,7 +6,7 @@ import numpy as np
 from flask import Blueprint, render_template, request, send_file, url_for, flash, redirect
 from werkzeug.utils import secure_filename
 from Utils.general_utils import make_dir_for_temp_upload, allowed_file
-from Utils.PDF_Redaction import redact_pdf, redact_names_from_pdf
+from Utils.PDF_Redaction import redact_pdf
 from Utils.rbac_utils import roles_required, role_redirects
 from config import MODEL_FILE, LABEL_ENCODER_FILE
 import os
@@ -46,17 +46,11 @@ def redact_upload():
     temp_upload_folder = make_dir_for_temp_upload()
 
     temp_file_path = os.path.join(temp_upload_folder, filename)
+    print(temp_file_path)
     file.save(temp_file_path)
-    print("File saved to:", temp_file_path)
+
 
     redacted_pdf_path = os.path.join(temp_upload_folder, f'redacted_{filename}')
-    print("Redacted PDF will be saved to:", redacted_pdf_path)
-
-    print("Redacting names using spaCy NER.")
-    log_this('Redacting names using spaCy NER', 'high')
-    redact_names_from_pdf(temp_file_path, redacted_pdf_path)
-
-    print('Redacting normal PII with Regex function')
     redact_pdf(temp_file_path,redacted_pdf_path)
 
     return send_file(redacted_pdf_path, as_attachment=True, download_name=f"redacted_{filename}")

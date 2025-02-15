@@ -42,7 +42,8 @@ def watermark_pdf(input_pdf_path, watermark_text='nobody', output_pdf_path=None)
                     fontsize=font_size,
                     color=color,
                     rotate=rotate,
-                    overlay=False  # Ensure watermark is placed on top
+                    overlay=False,
+                    render_mode=1
                 )
 
     # Save the watermarked PDF to the specified output path
