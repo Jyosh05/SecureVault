@@ -102,8 +102,6 @@ def update_model():
     return render_template('Admin/update_model.html')
 
 
-import os
-
 @ai_bp.route('/scan_pdfs', methods=['POST'])
 def scan_pdfs():
     load_AI_model()
@@ -132,14 +130,33 @@ def scan_pdfs():
                             text = " ".join([page.get_text() for page in doc])
                             print(f"Extracted text from {pdf_path}:\n{text[:500]}")  # Print first 500 characters
 
-                            if text.strip():
-                                prediction = model.predict([text])
-                                labels = mlb.inverse_transform(prediction)
+                            # Iterate through pages and check for redactions (black boxes)
+                            for page_num in range(doc.page_count):
+                                page = doc.load_page(page_num)
+                                redacted_regions = []  # List to store redacted regions
 
-                                print(f"Predicted PII for {pdf_path}: {labels[0] if labels else 'None'}")
+                                # Check for redaction annotations
+                                annotations = page.annots()  # Get annotations on the page
+                                if annotations:
+                                    for annot in annotations:
+                                        if annot.type[0] == 8:  # Check if it's a redaction annotation (type 8)
+                                            redacted_regions.append(annot.rect)  # Get the bounding box of the redaction
 
-                                if any(labels):
-                                    pii_detected_files.append({'file': pdf_path, 'pii_types': labels[0]})
+                                # Remove redacted text from the extracted text
+                                page_text = page.get_text("text")
+                                for rect in redacted_regions:
+                                    page_text = remove_redacted_text(page_text, rect, page)
+
+                                # Perform PII detection on the text that is not redacted
+                                if page_text.strip():
+                                    prediction = model.predict([page_text])
+                                    labels = mlb.inverse_transform(prediction)
+
+                                    print(f"Predicted PII for {pdf_path}: {labels[0] if labels else 'None'}")
+
+                                    if any(labels):
+                                        pii_detected_files.append({'file': pdf_path, 'pii_types': labels[0]})
+
                     except Exception as e:
                         print(f"Error processing {pdf_path}: {e}")
 
@@ -148,3 +165,20 @@ def scan_pdfs():
         print(f"File: {item['file']}, PII Types: {item['pii_types']}")
 
     return render_template('Admin/scan_reports.html', pii_detected_files=pii_detected_files)
+
+
+def remove_redacted_text(page_text, rect, page):
+    """Remove text from redacted regions to ensure PII detection does not consider them."""
+    words = page.get_text("words")
+    redacted_text = ""
+
+    # Iterate over the words and check if they are inside the redacted rect
+    for word in words:
+        word_rect = fitz.Rect(word[:4])  # Get the bounding box of the word
+        if rect.intersects(word_rect):  # If the word is inside the redacted region
+            # Replace redacted text with spaces (to maintain text length)
+            redacted_text += " " * len(word[4])  # Add spaces of same length as the word
+        else:
+            redacted_text += word[4] + " "  # Add non-redacted text normally
+
+    return redacted_text
