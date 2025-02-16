@@ -9,26 +9,41 @@
 <body>
     {% include 'Doctor/doctorBase.html' %}
 
+    <script language="javascript">
+            var noPrint = true;
+            var noCopy = true;
+            var noScreenshot = true;
+            var autoBlur = true;
+        </script>
+
+    <script type="text/javascript" src="https://pdfanticopy.com/noprint.js"></script>
+
     <div class="container">
         <h1>Files Shared with You</h1>
 
         <div class="file-list">
             {% for file in share_files %}
-            <div class="file-card">
-                <div class="file-thumbnail">
-                    <img src="{{ url_for('static', filename='previews/pdf.png') }}">
+                {% if file.Expiration_Date and file.Expiration_Date >= current_date %}
+                <div class="file-card">
+                    <div class="file-thumbnail">
+                        <img src="{{ url_for('static', filename='previews/pdf.png') }}">
+                    </div>
+
+                    <div class="file-title">{{ file.Title }}</div>
+                    <div class="file-shared-by">Shared by: {{ file.Shared_By }}</div>
+                    <div class="file-date">Date Shared: {{ file.Date_Shared }}</div>
+                    <div class="file-expiration">Expiration Date: {{ file.Expiration_Date }}</div>
+                    <a href="{{ url_for('doc_share.view_each_doc_pdf', share_id=file.Share_ID) }}" class="open-btn">Open</a>
 
                 </div>
-
-                <div class="file-title">{{ file.Title }}</div>
-                <div class="file-shared-by">Shared by: {{ file.Shared_By }}</div>
-                <div class="file-date">Date Shared: {{ file.Date_Shared }}</div>
-                <a href="{{ url_for('view_pdf.view_each_pdf', share_id=file.Share_ID) }}" class="open-btn">Open</a>
-
-
-
-
-            </div>
+                {% else %}
+                    <!-- Optionally, display a message for expired files -->
+                    <div class="file-card expired-file">
+                        <div class="file-title">{{ file.Title }} (Expired)</div>
+                        <div class="file-shared-by">Shared by: {{ file.Shared_By }}</div>
+                        <div class="file-date">Date Shared: {{ file.Date_Shared }}</div>
+                    </div>
+                {% endif %}
             {% endfor %}
 
             {% if not share_files %}

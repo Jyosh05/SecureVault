@@ -2,7 +2,10 @@ import fitz  # PyMuPDF
 import os
 from PIL import Image
 import io
-from Utils.general_utils import temp_file_sharing_upload
+
+
+UPLOAD_FOLDER = 'Files/Sharing'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 def pdf_to_images(pdf_path, dpi=300):
@@ -23,7 +26,7 @@ def pdf_to_images(pdf_path, dpi=300):
 def images_to_pdf(pdf_file_name, images, output_pdf_path):
     """Converts a list of images to a single PDF file"""
 
-    upload_folder = temp_file_sharing_upload()  # Get the upload folder
+    upload_folder = UPLOAD_FOLDER  # Get the upload folder
 
     image_list = []
     for i, img in enumerate(images):
@@ -44,6 +47,7 @@ def images_to_pdf(pdf_file_name, images, output_pdf_path):
     print(f"PDF saved at {output_pdf_path}")
 
 
+
 def convert_pdf_to_image_pdf(pdf_path, output_directory, dpi=300):
     """Converts the PDF to an image-based PDF with improved resolution"""
     # Extract the filename without extension
@@ -55,6 +59,14 @@ def convert_pdf_to_image_pdf(pdf_path, output_directory, dpi=300):
     # Create the output file path using the original filename
     output_pdf_path = os.path.join(output_directory, f"{base_filename}_converted.pdf")
 
+    # Check if a file with the same name already exists and modify the filename if necessary
+    if os.path.exists(output_pdf_path):
+        # Increment a counter until a unique filename is found
+        counter = 2
+        while os.path.exists(output_pdf_path):
+            output_pdf_path = os.path.join(output_directory, f"{base_filename}_converted({counter}).pdf")
+            counter += 1
+
     # Convert PDF pages to images with custom resolution
     images = pdf_to_images(pdf_path, dpi)
 
@@ -62,3 +74,4 @@ def convert_pdf_to_image_pdf(pdf_path, output_directory, dpi=300):
     images_to_pdf(base_filename, images, output_pdf_path)
 
     return output_pdf_path
+

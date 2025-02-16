@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update File Sharing Duration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    {% include 'Doctor/doctorBase.html' %}
+
+    <div class="container mt-4">
+        <h2>Update File Sharing Duration</h2>
+
+        <form method="POST" action="{{ url_for('doc_share.update_doc_share', share_id=share.Share_ID) }}">
+            <div class="form-group">
+                <label for="duration">Duration:</label>
+            <input type="number" id="duration" name="duration" required min="1">
+
+                <label for="duration_unit">Duration Unit:</label>
+            <select id="duration_unit" name="duration_unit" required>
+                <option value="minutes">Minutes</option>
+                <option value="hours">Hours</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Update Duration</button>
+            </div>
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert alert-info mt-3">
+                    {% for category, message in messages %}
+                        <strong>{{ category }}:</strong> {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,5 +1,4 @@
 from flask import Blueprint, request, abort, jsonify, session, render_template, flash, redirect, send_from_directory, url_for, send_file
-from Utils.general_utils import temp_file_sharing_upload, mydb
 from Utils.file_sharing_utils import convert_pdf_to_image_pdf
 from Utils.rbac_utils import *
 import os

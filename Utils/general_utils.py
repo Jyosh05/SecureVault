@@ -82,17 +82,21 @@ def check_table():
             """)
 
         # Check and create link table
-        mycursor.execute(f"SHOW TABLES LIKE 'link'")
+        mycursor.execute(f"SHOW TABLES LIKE 'doc_sharing'")
         exist = mycursor.fetchone()
         if not exist:
             mycursor.execute("""
-                CREATE TABLE IF NOT EXISTS link(
-                    ID INT AUTO_INCREMENT PRIMARY KEY,
-                    User_ID INT,
-                    Expiration_Link VARCHAR(255) NOT NULL,
-                    Duration TIMESTAMP NOT NULL,
-                    Expired BOOLEAN DEFAULT FALSE,
-                    FOREIGN KEY (User_ID) REFERENCES user(ID) ON DELETE CASCADE
+                CREATE TABLE IF NOT EXISTS doc_sharing(                  
+                    Share_ID INT AUTO_INCREMENT PRIMARY KEY,
+                    File_ID INT NOT NULL,  
+                    Duration INT,
+                    Converted_File_Path VARCHAR(600) NOT NULL, 
+                    Shared_By_User_ID INT NOT NULL,  
+                    Shared_With_User_ID INT NOT NULL,  
+                    Date_Shared TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (Shared_By_User_ID) REFERENCES user(ID) ON DELETE CASCADE,
+                    FOREIGN KEY (Shared_With_User_ID) REFERENCES user(ID) ON DELETE CASCADE,
+                    FOREIGN KEY (File_ID) REFERENCES file(ID) ON DELETE CASCADE
                 )
             """)
 
@@ -213,9 +217,3 @@ def generate_file_hash(file, algorithm='sha256'):
         raise
 
 
-def temp_file_sharing_upload():
-    upload_folder = "../Files/Sharing"
-    if not os.path.exists(upload_folder):
-        os.makedirs(upload_folder, exist_ok=True)
-
-    return upload_folder

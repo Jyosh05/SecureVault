@@ -1,11 +1,12 @@
 from flask import Blueprint, request, jsonify, session, render_template, flash, send_file, redirect, url_for
-from Utils.general_utils import temp_file_sharing_upload, mydb
+from Utils.general_utils import mydb
 from Utils.file_sharing_utils import convert_pdf_to_image_pdf
 from Utils.rbac_utils import *
 import os
 
 share_file_bp = Blueprint('share_file', __name__, template_folder='templates')
-
+UPLOAD_FOLDER = 'Files/Sharing'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @share_file_bp.route('/share/<int:file_id>', methods=['GET', 'POST'])
 @roles_required('doctor')
@@ -52,7 +53,7 @@ def share_file(file_id):
                  flash("This file has already been shared with patient")
             else:
                 # Convert PDF at the time of sharing
-                upload_folder = temp_file_sharing_upload()
+                upload_folder = UPLOAD_FOLDER
                 converted_file_path = convert_pdf_to_image_pdf(original_file_path, upload_folder)
 
                 # Insert into file_sharing table
@@ -166,6 +167,8 @@ def view_perma_share():
                 JOIN file f ON fs.File_ID = f.ID
                 JOIN user u ON fs.Shared_With_User_ID = u.ID
                 WHERE fs.Shared_By_User_ID = %s
+                AND f.Deleted_At IS NULL
+                AND f.File_Modified IS FALSE
             """, (user_id,))
     all_shared_files = mycursor.fetchall()
 
@@ -188,8 +191,21 @@ def revoke_perma_sharing(share_id):
     if not delete_share:
         return jsonify({"error": "Sharing not found"}), 404
 
+    # Get the file path to the converted file
+    converted_file_path = delete_share['Converted_File_Path']
+    print(f"this is the filepath {converted_file_path}")
+
+    # Delete the file from the filesystem if it exists
+    if converted_file_path and os.path.exists(converted_file_path):
+        try:
+            os.remove(converted_file_path)  # Delete the file from the OS
+        except Exception as e:
+            flash(f"Error deleting the file: {e}", 'error')
+            return redirect(url_for('share_file.view_perma_share'))
+
     mycursor.execute("DELETE FROM file_sharing WHERE Share_ID = %s", (share_id,))
     mydb.commit()
+
 
     flash("File shared Permanently Deleted.", 'success')  # Flash message on success
     return redirect(url_for('share_file.view_perma_share'))
