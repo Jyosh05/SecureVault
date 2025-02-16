@@ -16,6 +16,7 @@ from Admin.AI import ai_bp
 from Doctor.home import doctor_bp
 from Doctor.file_sharing import share_file_bp
 from User_Routes.view_each_pdf import view_pdf_bp
+from backup import *
 
 
 #PLEASE REGISTER THE BLUEPRINT
@@ -42,7 +43,6 @@ app.register_blueprint(create_doctor_bp)
 app.register_blueprint(share_file_bp)
 app.register_blueprint(view_pdf_bp)
 app.register_blueprint(ai_bp)
-
 
 
 if __name__ == "__main__":
