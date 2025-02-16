@@ -8,9 +8,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.metrics import f1_score
-from flask import request, flash, redirect, url_for, render_template, Blueprint
+from flask import request, flash, redirect, url_for, render_template, Blueprint, jsonify
 from Utils.rbac_utils import roles_required
 from config import MODEL_FILE,LABEL_ENCODER_FILE, DATA_FILE
+import os
+import fitz
+
 
 ai_bp = Blueprint('ai',__name__, template_folder='templates')
 
@@ -51,6 +54,7 @@ def train_model(df):
     return model, mlb
 
 @ai_bp.route('/update_model', methods=['GET', 'POST'])
+@roles_required('so')
 def update_model():
     load_AI_model()  # Load existing model if available
     if request.method == 'POST':
@@ -96,3 +100,51 @@ def update_model():
             return render_template('Admin/update_model.html')
 
     return render_template('Admin/update_model.html')
+
+
+import os
+
+@ai_bp.route('/scan_pdfs', methods=['POST'])
+def scan_pdfs():
+    load_AI_model()
+    if model is None or mlb is None:
+        print('There is no model')
+        return render_template('Admin/scan_reports.html', pii_detected_files=[], error="Model is not trained yet.")
+
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Files'))
+    subdirs = ["Perma", "Redact_&_Watermark", "Soft_Deletion"]
+    pii_detected_files = []
+
+    for subdir in subdirs:
+        pdf_dir = os.path.join(base_dir, subdir)
+        if not os.path.isdir(pdf_dir):
+            print(f"Skipping non-existent directory: {pdf_dir}")
+            continue
+
+        for root, _, files in os.walk(pdf_dir):
+            for filename in files:
+                if filename.endswith('.pdf'):
+                    pdf_path = os.path.join(root, filename)
+                    print(f"\nProcessing file: {pdf_path}")
+
+                    try:
+                        with fitz.open(pdf_path) as doc:
+                            text = " ".join([page.get_text() for page in doc])
+                            print(f"Extracted text from {pdf_path}:\n{text[:500]}")  # Print first 500 characters
+
+                            if text.strip():
+                                prediction = model.predict([text])
+                                labels = mlb.inverse_transform(prediction)
+
+                                print(f"Predicted PII for {pdf_path}: {labels[0] if labels else 'None'}")
+
+                                if any(labels):
+                                    pii_detected_files.append({'file': pdf_path, 'pii_types': labels[0]})
+                    except Exception as e:
+                        print(f"Error processing {pdf_path}: {e}")
+
+    print("\nPII Detection Completed. Results:")
+    for item in pii_detected_files:
+        print(f"File: {item['file']}, PII Types: {item['pii_types']}")
+
+    return render_template('Admin/scan_reports.html', pii_detected_files=pii_detected_files)

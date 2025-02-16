@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Add New Keywords</title>
+  <title>Update AI Model</title>
   <link rel="stylesheet" href="../../static/css/update_model.css">
 </head>
 <body>
@@ -34,6 +34,12 @@
 
       <button type="submit">Submit</button>
     </form>
+
+    <h2>Run PII Detection</h2>
+    <form method="POST" action="{{ url_for('ai.scan_pdfs') }}">
+      <button type="submit">Run AI Scan</button>
+    </form>
+
   </div>
 
   <script>
@@ -59,9 +65,6 @@
           <input type="checkbox" id="pii_type_cc" name="pii_types[]" value="Credit Card Number"> Credit Card Number<br>
           <input type="checkbox" id="pii_type_location" name="pii_types[]" value="Location"> Location<br>
         </div>
-
-        <label for="label">Label:</label>
-        <input type="checkbox" id="label" name="label" value="1"><br><br>
 
         <button type="button" class="remove-keyword">Remove</button>
       `;

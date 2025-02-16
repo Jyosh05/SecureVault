@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PII Scan Reports</title>
+  <link rel="stylesheet" href="../../static/css/reports.css">
+</head>
+<body>
+  {% include 'Admin/adminBase.html' %}
+
+  <div class="container">
+    <h2>PII Detection Reports</h2>
+
+    {% if pii_detected_files %}
+      <ul>
+        {% for file in pii_detected_files %}
+          <li>
+            <strong>File:</strong> {{ file.file }} <br>
+            <strong>Detected PII Types:</strong> {{ file.pii_types | join(', ') }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No PII detected in the scanned files.</p>
+    {% endif %}
+
+    <a href="{{ url_for('ai.scan_pdfs') }}">Run Another Scan</a>
+  </div>
+
+</body>
+</html>
