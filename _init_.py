@@ -17,6 +17,8 @@ from Doctor.home import doctor_bp
 from Doctor.file_sharing import share_file_bp
 from User_Routes.view_each_pdf import view_pdf_bp
 from Doctor.doc_file_sharin import doc_share_bp
+from backup import *
+
 
 
 #PLEASE REGISTER THE BLUEPRINT
