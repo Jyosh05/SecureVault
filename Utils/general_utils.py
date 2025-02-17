@@ -2,7 +2,7 @@ import mysql.connector
 from config import DB_Config
 import os
 import hashlib
-
+import mimetypes
 
 mydb = mysql.connector.connect(
     host=DB_Config['host'],
@@ -165,18 +165,18 @@ def make_dir_for_temp_upload():
     return upload_folder
 
 
-ALLOWED_EXTENSIONS = {'pdf','txt', 'zip'}
 
-# Maximum file size in bytes (5 MB)
-MAX_FILE_SIZE = 5 * 1024 * 1024
+ALLOWED_EXTENSIONS = {'pdf', 'txt'}
+MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
 
+# Allowed MIME types for PDF and text files
+ALLOWED_MIME_TYPES = {'application/pdf', 'text/plain'}
 
 def allowed_file(filename):
     if not filename or '.' not in filename:
         return False
     extension = filename.rsplit('.', 1)[1].lower()
     return extension in ALLOWED_EXTENSIONS
-
 
 def is_file_size_valid(file):
     try:
@@ -188,28 +188,39 @@ def is_file_size_valid(file):
         print(f"Error checking file size: {e}")
         return False
 
+def is_valid_mime_type(file):
+    try:
+        # Get the MIME type based on the file extension
+        filename = file.filename
+        mime_type, encoding = mimetypes.guess_type(filename)
+
+        # If MIME type cannot be determined, return False
+        if mime_type is None:
+            return False
+
+        # Check if the MIME type is allowed
+        return mime_type in ALLOWED_MIME_TYPES
+    except Exception as e:
+        print(f"Error checking MIME type: {e}")
+        return False
+
+
 def generate_file_hash(file, algorithm='sha256'):
     try:
-        # Validate the hashing algorithm
         if algorithm not in hashlib.algorithms_available:
             raise ValueError(f"Unsupported hashing algorithm: {algorithm}")
 
-        # Initialize the hash object
         hasher = hashlib.new(algorithm)
 
-        # If the input is a file path (str), open the file in binary mode
         if isinstance(file, str):
             with open(file, 'rb') as f:
-                while chunk := f.read(8192):  # Read in chunks for efficiency
+                while chunk := f.read(8192):
                     hasher.update(chunk)
         else:
-            # For file-like objects, ensure the pointer is reset to the start
             file.seek(0)
             while chunk := file.read(8192):
                 hasher.update(chunk)
-            file.seek(0)  # Reset the pointer after reading
-
-        # Return the hex digest of the hash
+            file.seek(0)
         return hasher.hexdigest()
 
     except Exception as e:
