@@ -35,6 +35,11 @@ def upload_file():
             log_this('User exceeds file size limit', 'critical')
             return redirect(request.url)
 
+        if not is_valid_mime_type(file):
+            flash("Invalid MIME type for file.", 'error')
+            log_this('Invalid MIME type detected', 'high')
+            return redirect(request.url)
+
         file_in_memory = io.BytesIO(file.read())
 
         scan_result = scan_file_virustotal(file_in_memory)

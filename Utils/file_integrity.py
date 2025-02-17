@@ -45,7 +45,7 @@ def check_file_integrity(file_id):
         else:
             cursor.execute("UPDATE file SET File_Modified = 1 WHERE ID = %s", (file_id,))
             mydb.commit()
-            return "Warning, file is modified!"
+            return "Warning, file is modified! Delete Immediately!"
 
     except Exception as e:
         return f"Error checking file integrity: {e}"
