@@ -148,7 +148,7 @@ def scan_pdfs():
 
 
                                     if any(labels):
-                                        pii_detected_files.append({'file': pdf_path, 'pii_types': labels[0]})
+                                        pii_detected_files.append({'file': filename, 'pii_types': labels[0]})
 
                     except Exception as e:
                         print(f"Error processing {pdf_path}: {e}")
