@@ -19,8 +19,6 @@ delete_bp = Blueprint('delete', __name__, template_folder='templates')
 def recycle_bin():
     try:
         mycursor = mydb.cursor(dictionary=True)
-
-        # Fetch soft-deleted files with title from the 'file' table
         mycursor.execute("""
             SELECT sd.File_ID, sd.File_Path, f.Title
             FROM soft_deletion sd
@@ -38,22 +36,18 @@ def recycle_bin():
 def soft_delete(file_id):
     try:
         mycursor = mydb.cursor(dictionary=True)
-
-        # Check if the file exists
         mycursor.execute("SELECT ID, File_Path FROM file WHERE ID = %s", (file_id,))
         file = mycursor.fetchone()
 
         if not file:
             return jsonify({"error": "File not found"}), 404
 
-        # Move file to soft deletion table (keeping a record for recovery purposes)
-        expiry_date = datetime.now() + timedelta(minutes=3)
+        expiry_date = datetime.now() + timedelta(minutes=2)
         mycursor.execute(
             "INSERT INTO soft_deletion (File_ID, File_Path, Expiry_Date) VALUES (%s, %s, %s)",
             (file["ID"], file["File_Path"], expiry_date)  # Keep original path
         )
 
-        # Flag the file as soft deleted
         mycursor.execute("UPDATE file SET Deleted_At = NOW() WHERE ID = %s", (file_id,))
 
         mydb.commit()
@@ -71,7 +65,6 @@ def soft_delete(file_id):
 @delete_bp.route('/restore/<int:file_id>', methods=['POST'])
 def restore_file(file_id):
     try:
-        # Fetch the file details from the 'file' table
         mycursor = mydb.cursor(dictionary=True)
         mycursor.execute("""SELECT * FROM file WHERE ID = %s""", (file_id,))
         file = mycursor.fetchone()
@@ -79,19 +72,15 @@ def restore_file(file_id):
         if not file:
             raise ValueError("File not found")
 
-        # Step 1: Delete the file entry from the 'soft_deletion' table
         mycursor.execute("""
             DELETE FROM soft_deletion WHERE File_ID = %s
         """, (file_id,))
 
-        # Step 2: Set the 'Deleted_At' field in the 'file' table to NULL (restore the file)
         mycursor.execute("""
             UPDATE file
             SET Deleted_At = NULL
             WHERE ID = %s
         """, (file_id,))
-
-        # Commit the transaction to make changes permanent
         mydb.commit()
 
         flash("File restored successfully", 'success')
@@ -108,7 +97,6 @@ def hard_delete(file_id):
     try:
         mycursor = mydb.cursor(dictionary=True)
 
-        # Check if the file exists in soft deletion
         mycursor.execute("SELECT File_ID, File_Path FROM soft_deletion WHERE File_ID = %s", (file_id,))
         file = mycursor.fetchone()
 
@@ -137,25 +125,20 @@ def hard_delete(file_id):
 def auto_delete_expired_files():
     try:
         mycursor = mydb.cursor(dictionary=True)
-
-        # Find expired files
         mycursor.execute("SELECT File_ID, File_Path, Expiry_Date FROM soft_deletion WHERE Expiry_Date <= NOW()")
         expired_files = mycursor.fetchall()
 
         if not expired_files:
-            print("No expired files found.")  # Debugging output
             return
 
         for file in expired_files:
             file_id = file["File_ID"]
             file_path = file["File_Path"]
 
-            # Delete the actual file
             if os.path.exists(file_path):
                 os.remove(file_path)
                 print(f"Deleted file: {file_path}")
 
-            # Remove file from database
             mycursor.execute("DELETE FROM soft_deletion WHERE File_ID = %s", (file_id,))
             mycursor.execute("DELETE FROM file WHERE ID = %s", (file_id,))
             print(f"Removed file ID {file_id} from database.")

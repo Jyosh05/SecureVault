@@ -32,7 +32,6 @@ def check_file_integrity(file_id):
 
         corrected_db_path = result['File_Path'].replace("\\ ", "/")
         normalized_path = os.path.normpath(corrected_db_path)
-        print(f"Checking integrity for: {normalized_path}")  # Debugging
 
         if not os.path.exists(normalized_path):
             return "File missing from storage."
@@ -40,12 +39,10 @@ def check_file_integrity(file_id):
         new_hash = generate_file_hash(normalized_path)
 
         if new_hash == result['File_Hash']:
-            # File is unchanged, update File_Modified to 0
             cursor.execute("UPDATE file SET File_Modified = 0 WHERE ID = %s", (file_id,))
             mydb.commit()
             return "File is intact."
         else:
-            # File has been modified, update File_Modified to 1
             cursor.execute("UPDATE file SET File_Modified = 1 WHERE ID = %s", (file_id,))
             mydb.commit()
             return "Warning, file is modified!"
