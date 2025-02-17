@@ -6,11 +6,9 @@ import subprocess
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 
-# Paths
+
 UPLOAD_FOLDER = 'Files/Perma'
 BACKUP_FOLDER = 'Backups'
-
-
 os.makedirs(BACKUP_FOLDER, exist_ok=True)
 
 
@@ -37,8 +35,7 @@ def backup_mysql_db():
         print(f"Error backing up MySQL database: {e}")
 
 
-def delete_old_backups(retention_days=1):
-    """Deletes backup files older than the retention period."""
+def delete_old_backups(retention_days=7):
     try:
         current_time = datetime.now()
         for filename in os.listdir(BACKUP_FOLDER):
@@ -57,8 +54,6 @@ def perform_backup():
     backup_mysql_db()
 
 
-
-# Schedule automatic backups every 7 days
 scheduler = BackgroundScheduler()
 scheduler.add_job(perform_backup, 'interval', days=7, start_date=datetime.now())
 scheduler.start()

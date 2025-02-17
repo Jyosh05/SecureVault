@@ -19,13 +19,10 @@ def view_files():
 
     try:
         mycursor = mydb.cursor(dictionary=True)
-
-        # Retrieve username
         mycursor.execute("SELECT Username FROM user WHERE ID = %s", (user_id,))
         user = mycursor.fetchone()
         username = user['Username'] if user else "Unknown User"
 
-        # Query to fetch file details
         query = """
             SELECT ID, Title, File_Type, File_Path, Uploaded_At, Deleted_At
             FROM file
@@ -35,14 +32,11 @@ def view_files():
         mycursor.execute(query, (user_id,))
         files = mycursor.fetchall()
 
-        # Loop through files and check if they are deleted
         file_details = []
         for file in files:
             deleted_at = file.get('Deleted_At')
 
             if not deleted_at:
-                print(f"Files Retrieved from DB: {files}")  # Debugging print
-
                 file_id = file['ID']
                 file_path = file['File_Path']
 
@@ -50,8 +44,6 @@ def view_files():
                     integrity_status = check_file_integrity(file_id)
                 except Exception as e:
                     integrity_status = f"Error checking integrity: {e}"
-
-                print(f"File ID: {file_id}, Title: {file['Title']}, Status: {integrity_status}")  # Debugging print
 
                 file_details.append({
                     'id': file_id,
@@ -66,7 +58,6 @@ def view_files():
         return render_template('Doctor/view_files.html', username=username, files=file_details)
 
     except Exception as e:
-        print(f"Error in view_files: {e}")  # Debugging print
         flash(f"Error retrieving files: {e}", 'error')
 
     return render_template('Doctor/view_files.html', files=[])

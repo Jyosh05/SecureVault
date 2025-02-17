@@ -74,12 +74,10 @@ def upload_file():
 
 
 def scan_file_virustotal(file_in_memory):
-    """Scan a file in memory using VirusTotal API and ensure results before allowing upload."""
     url = "https://www.virustotal.com/api/v3/files"
     headers = {"x-apikey": VIRUSTOTAL_API_KEY}
 
     try:
-        # Instead of file_path, use in-memory bytesIO file
         files = {"file": file_in_memory}
         response = requests.post(url, headers=headers, files=files)
 
@@ -90,7 +88,6 @@ def scan_file_virustotal(file_in_memory):
             if not scan_id:
                 return {"error": "Failed to retrieve scan ID"}
 
-            # Polling mechanism to wait for scan results
             report_url = f"https://www.virustotal.com/api/v3/analyses/{scan_id}"
             for _ in range(50):
                 report_response = requests.get(report_url, headers=headers)
@@ -108,12 +105,8 @@ def scan_file_virustotal(file_in_memory):
                                     "suspicious": suspicious_count}
 
                         return {"success": "File is clean"}
-
-                time.sleep(2)  # Wait 2 seconds before retrying
-
+                time.sleep(2)
             return {"error": "Scan timed out"}
-
         return {"error": f"VirusTotal API error: {response.status_code}", "details": response.json()}
-
     except Exception as e:
         return {"error": f"Error connecting to VirusTotal: {e}"}
