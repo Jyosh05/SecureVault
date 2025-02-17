@@ -67,7 +67,7 @@ def upload_file():
             flash("File uploaded successfully!", 'success')
         except Exception as e:
             flash(f"Error uploading file: {e}", 'error')
-
+        log_this("File uploaded successfully")
         return redirect(url_for('file.upload_file'))
 
     return render_template('Features/upload.html')

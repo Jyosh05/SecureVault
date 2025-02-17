@@ -9,6 +9,7 @@ import os
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
+from Utils.logging_utils import log_this
 
 
 delete_bp = Blueprint('delete', __name__, template_folder='templates')
@@ -57,11 +58,13 @@ def soft_delete(file_id):
 
         mydb.commit()
         flash("File moved to recycle bin.", 'success')  # Flash message on success
+        log_this("File moved to recycle Bin", "medium")
         return redirect(url_for('view_files.view_files'))
 
     except Exception as e:
         mydb.rollback()
         flash(f"Failed to soft delete file: {str(e)}", 'error')  # Flash message on failure
+        log_this("Failed to soft delete files", "high")
         return redirect(url_for('view_files.view_files'))
 
 
@@ -122,6 +125,7 @@ def hard_delete(file_id):
         mydb.commit()
 
         flash("File Permanently Deleted.", 'success')  # Flash message on success
+        log_this("User Permanently deleted file")
         return redirect(url_for('delete.recycle_bin'))
 
     except Exception as e:
