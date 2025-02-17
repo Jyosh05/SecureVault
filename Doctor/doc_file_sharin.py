@@ -83,7 +83,7 @@ def share_file_doc(file_id):
                     return redirect(url_for('view_files.view_files'))
 
         elif role == 'patient':
-            flash("Files can only be permanently shared with patients only. To share with doctors, please use temporary sharing")
+            flash("Files can only be temporarily shared with doctors only. To share with patients, please use permanent sharing")
 
         else:
             flash("User does not exist. Try another username or try again later.")
