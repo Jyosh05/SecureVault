@@ -26,7 +26,7 @@ def load_AI_model():
     except:
         model = None
         mlb = None
-        print("no existing model, will train on the first update")
+
 
 def train_model(df):
     X = df['text']
@@ -50,7 +50,7 @@ def train_model(df):
 
     joblib.dump(model, MODEL_FILE)
     joblib.dump(mlb, LABEL_ENCODER_FILE)
-    print(f"Model and label encoder saved to {MODEL_FILE} and {LABEL_ENCODER_FILE}")
+
     return model, mlb
 
 @ai_bp.route('/update_model', methods=['GET', 'POST'])
@@ -77,10 +77,8 @@ def update_model():
                 'label': label,
             }
 
-            print(new_data)
             # Create new DataFrame
             df_new = pd.DataFrame([new_data])
-            print(df_new)
 
             # Concatenate existing and new data
             df = pd.concat([existing_df, df_new], ignore_index=True)
@@ -102,11 +100,10 @@ def update_model():
     return render_template('Admin/update_model.html')
 
 
-@ai_bp.route('/scan_pdfs', methods=['POST'])
+@ai_bp.route('/scan_pdfs', methods=['POST','GET'])
 def scan_pdfs():
     load_AI_model()
     if model is None or mlb is None:
-        print('There is no model')
         return render_template('Admin/scan_reports.html', pii_detected_files=[], error="Model is not trained yet.")
 
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Files'))
@@ -116,19 +113,16 @@ def scan_pdfs():
     for subdir in subdirs:
         pdf_dir = os.path.join(base_dir, subdir)
         if not os.path.isdir(pdf_dir):
-            print(f"Skipping non-existent directory: {pdf_dir}")
             continue
 
         for root, _, files in os.walk(pdf_dir):
             for filename in files:
                 if filename.endswith('.pdf'):
                     pdf_path = os.path.join(root, filename)
-                    print(f"\nProcessing file: {pdf_path}")
 
                     try:
                         with fitz.open(pdf_path) as doc:
                             text = " ".join([page.get_text() for page in doc])
-                            print(f"Extracted text from {pdf_path}:\n{text[:500]}")  # Print first 500 characters
 
                             # Iterate through pages and check for redactions (black boxes)
                             for page_num in range(doc.page_count):
@@ -152,7 +146,6 @@ def scan_pdfs():
                                     prediction = model.predict([page_text])
                                     labels = mlb.inverse_transform(prediction)
 
-                                    print(f"Predicted PII for {pdf_path}: {labels[0] if labels else 'None'}")
 
                                     if any(labels):
                                         pii_detected_files.append({'file': pdf_path, 'pii_types': labels[0]})
@@ -160,9 +153,6 @@ def scan_pdfs():
                     except Exception as e:
                         print(f"Error processing {pdf_path}: {e}")
 
-    print("\nPII Detection Completed. Results:")
-    for item in pii_detected_files:
-        print(f"File: {item['file']}, PII Types: {item['pii_types']}")
 
     return render_template('Admin/scan_reports.html', pii_detected_files=pii_detected_files)
 

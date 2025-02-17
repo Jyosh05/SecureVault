@@ -13,13 +13,11 @@ def create_doctor():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
         email = request.form.get('email')
-        print(username,password,email)
 
         if not username or not password or not email:
             return jsonify({'error':'All fields are required'})
 
         if password == confirm_password:
-            print("trying to add in")
             try:
                 #NEED HASHING
                 role = 'doctor'

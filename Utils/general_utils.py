@@ -214,6 +214,6 @@ def generate_file_hash(file, algorithm='sha256'):
 
     except Exception as e:
         print(f"Error generating file hash: {e}")
-        raise
+        return e
 
 

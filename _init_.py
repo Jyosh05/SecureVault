@@ -51,6 +51,5 @@ app.register_blueprint(doc_share_bp)
 
 if __name__ == "__main__":
     check_table()
-    print(app.config)
     create_so_user()
     app.run(debug=True)

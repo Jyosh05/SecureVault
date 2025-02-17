@@ -193,7 +193,7 @@ def revoke_perma_sharing(share_id):
 
     # Get the file path to the converted file
     converted_file_path = delete_share['Converted_File_Path']
-    print(f"this is the filepath {converted_file_path}")
+
 
     # Delete the file from the filesystem if it exists
     if converted_file_path and os.path.exists(converted_file_path):

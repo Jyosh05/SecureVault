@@ -37,7 +37,6 @@ def view_each_pdf(share_id):
 
     # Check if the converted file exists and render the template with PDF.js
     if converted_file_path and os.path.exists(converted_file_path):
-        print(f"this is the file retrieved {converted_file_path}")
         # Pass the file path to the template so it can be used by PDF.js
         pdf_url = url_for('view_pdf.serve_file', file_id=file_id)  # Dynamically generate the URL for the file
         return render_template('User_files/view_each_pdf.html', file_title=file_title,

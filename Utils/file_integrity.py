@@ -32,7 +32,6 @@ def check_file_integrity(file_id):
 
         corrected_db_path = result['File_Path'].replace("\\ ", "/")
         normalized_path = os.path.normpath(corrected_db_path)
-        print(f"Checking integrity for: {normalized_path}")  # Debugging
 
         if not os.path.exists(normalized_path):
             return "File missing from storage."

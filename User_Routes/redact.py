@@ -46,7 +46,6 @@ def redact_upload():
     temp_upload_folder = make_dir_for_temp_upload()
 
     temp_file_path = os.path.join(temp_upload_folder, filename)
-    print(temp_file_path)
     file.save(temp_file_path)
 
 

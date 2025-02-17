@@ -5,19 +5,16 @@ register_bp = Blueprint("register", __name__, template_folder="templates")
 
 @register_bp.route("/register",methods=["POST","GET"])
 def register():
-    print("registering")
     if request.method == "POST":
         username = request.form.get('username')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
         email = request.form.get('email')
-        print(username,password,email)
 
         if not username or not password or not email:
             return jsonify({'error':'All fields are required'})
 
         if password == confirm_password:
-            print("trying to add in")
             try:
                 #NEED HASHING
                 cursor = mydb.cursor(buffered=True)

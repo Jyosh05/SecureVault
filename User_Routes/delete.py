@@ -143,7 +143,6 @@ def auto_delete_expired_files():
         expired_files = mycursor.fetchall()
 
         if not expired_files:
-            print("No expired files found.")  # Debugging output
             return
 
         for file in expired_files:
@@ -153,12 +152,10 @@ def auto_delete_expired_files():
             # Delete the actual file
             if os.path.exists(file_path):
                 os.remove(file_path)
-                print(f"Deleted file: {file_path}")
 
             # Remove file from database
             mycursor.execute("DELETE FROM soft_deletion WHERE File_ID = %s", (file_id,))
             mycursor.execute("DELETE FROM file WHERE ID = %s", (file_id,))
-            print(f"Removed file ID {file_id} from database.")
 
         mydb.commit()
 

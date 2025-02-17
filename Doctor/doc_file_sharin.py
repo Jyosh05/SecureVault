@@ -188,7 +188,6 @@ def revoke_perma_doc_sharing(share_id):
 
     # Get the file path to the converted file
     converted_file_path = delete_share['Converted_File_Path']
-    print(f"this is the filepath {converted_file_path}")
 
     # Delete the file from the filesystem if it exists
     if converted_file_path and os.path.exists(converted_file_path):
@@ -293,7 +292,6 @@ def view_each_doc_pdf(share_id):
 
     # Check if the converted file exists and render the template with PDF.js
     if converted_file_path and os.path.exists(converted_file_path):
-        print(f"this is the file retrieved {converted_file_path}")
         # Pass the file path to the template so it can be used by PDF.js
         pdf_url = url_for('doc_share.serve_file_doc', file_id=file_id)  # Dynamically generate the URL for the file
         return render_template('Doctor/view_each_doc_pdf.html', file_title=file_title,
