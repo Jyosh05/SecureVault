@@ -17,7 +17,7 @@ so_config = {
     'role': 'so'
 }
 
-VIRUSTOTAL_API_KEY = "09d3f2180d9e3bf9aa9b3b312ddc352fb5e4f9049d2442fd789a589e3bbc26d5"
+VIRUSTOTAL_API_KEY = "78f01c22afe0a0839aa33bff147d32ed2133c82034f595404108f0469523a9af"
 
 MODEL_FILE = 'pii_model.pkl'
 LABEL_ENCODER_FILE = 'pii_label_encoder.pkl'
